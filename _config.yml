@@ -1,0 +1,4 @@
+title: Catálogo de Artesanías
+collections:
+  productos:
+    output: true
