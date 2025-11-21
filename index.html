@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luz Creaciones | Catálogo Exclusivo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="#" class="brand">
+                <img src="logo.png" alt="Luz Creaciones" class="logo" />
+                <div class="brand-text">
+                    <h1 class="font-brand">Luz Creaciones</h1>
+                    <p>Bisutería y Arte en Madera</p>
+                </div>
+            </a>
+            <nav class="main-nav">
+                <a href="#inicio" id="navInicio" class="active">Catálogo</a>
+                <a href="#contacto" id="navContacto">Contacto</a>
+                <a href="admin.html">Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="filters-bar">
+        <div class="filters-inner">
+            <div class="category-pills">
+                <button class="cat-pill active" data-cat="todas">Todas</button>
+                <button class="cat-pill" data-cat="bisuteria">Bisutería</button>
+                <button class="cat-pill" data-cat="madera">Madera</button>
+            </div>
+            <div class="search-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="search" id="buscador" placeholder="Buscar piezas únicas..." />
+            </div>
+        </div>
+    </div>
+
+    <main id="inicio" class="main-content">
+        <section id="productos" class="grid-productos">
+            <!-- Renderizado por JS -->
+        </section>
+
+        <div id="sinResultados" style="display:none; text-align:center; padding: 40px; color: var(--text-light);">
+            <h3>No encontramos lo que buscas 😔</h3>
+            <p>Intenta con otra palabra o categoría.</p>
+        </div>
+
+        <section id="contacto" style="display:none; max-width: 600px; margin: 40px auto; text-align: center;">
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="font-brand" style="font-size: 2rem; margin-bottom: 16px;">Hacemos tus ideas realidad</h2>
+                    <p style="font-size: 1.1rem; color: var(--text-light); margin-bottom: 24px;">
+                        ¿Buscas algo especial? Creamos piezas personalizadas con amor y dedicación.
+                    </p>
+                    <a href="https://wa.me/525548270460?text=Hola,%20me%20gustar%C3%ADa%20cotizar%20un%20dise%C3%B1o%20personalizado"
+                        class="btn btn-whatsapp" target="_blank">
+                        <span>Contactar por WhatsApp</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="text-align: center; padding: 40px 20px; color: var(--text-light); font-size: 0.9rem;">
+        <p>© 2023 Luz Creaciones · Hecho a mano con ❤️</p>
+    </footer>
+
+    <!-- Overlay Zoom -->
+    <div id="imageOverlay" class="overlay">
+        <button id="overlayClose" class="close-overlay">×</button>
+        <img id="overlayImg" src="" alt="Zoom" />
+    </div>
+
+    <a href="https://wa.me/525548270460" class="btn-icon"
+        style="position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background: #25D366; color: white; box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4); z-index: 90;"
+        target="_blank">
+        💬
+    </a>
+
+    <script src="app.js?v=6"></script>
+</body>
+
+</html>
