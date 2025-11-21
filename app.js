@@ -79,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const buscador = document.getElementById("buscador");
   const categoriaChips = document.querySelectorAll(".chip-button");
 
-  // Click en chips de categoría
   if (categoriaChips.length > 0) {
     categoriaChips.forEach((btn) => {
       btn.addEventListener("click", () => {
@@ -90,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Búsqueda en vivo
   if (buscador) {
     buscador.addEventListener("input", () => {
       renderCatalogo();
@@ -123,12 +121,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-
+  // Hacer clic en el logo o en "Luz Creaciones" lleva al inicio
   const brand = document.querySelector(".brand");
-  if (brand && navInicio) {
+  if (brand && navInicio && contactoSection) {
     brand.addEventListener("click", (e) => {
       e.preventDefault();
-      navInicio.click();
+      contactoSection.style.display = "none";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setActive(navInicio);
+      if (window.location.hash) {
+        history.replaceState(null, "", window.location.pathname);
+      }
     });
   }
 
