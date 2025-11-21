@@ -1,141 +1,124 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin | Luz Creaciones</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Luz Creaciones</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
-
-<body>
-    <header class="site-header">
-        <div class="header-inner">
-            <a href="index.html" class="brand">
-                <img src="logo.png" alt="Luz Creaciones" class="logo" />
-                <div class="brand-text">
-                    <h1 class="font-brand">Luz Creaciones</h1>
-                    <p>Panel de Administración</p>
-                </div>
-            </a>
-            <nav class="main-nav">
-                <a href="index.html">Volver al Catálogo</a>
-                <button id="logoutBtn" class="btn-sm"
-                    style="background:none; border:none; cursor:pointer; color: var(--text-light); font-weight:600; display:none;">Cerrar
-                    Sesión</button>
-            </nav>
+<body class="admin-body">
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <img src="logo.png" alt="Luz Creaciones" class="logo" />
+        <div class="brand-text">
+          <h1>Luz Creaciones</h1>
+          <p>Panel de administración</p>
         </div>
-    </header>
+      </div>
+      <nav class="main-nav">
+        <a href="index.html#inicio">Inicio</a>
+        <a href="index.html#contacto">Contacto</a>
+        <a href="admin.html" class="active">Admin</a>
+      </nav>
+    </div>
+  </header>
 
-    <main class="main-content">
-        <!-- Login Section -->
-        <section id="loginSection" style="max-width: 400px; margin: 60px auto; text-align: center;">
-            <div class="admin-card">
-                <h2 style="margin-bottom: 16px;">Bienvenido</h2>
-                <p style="color: var(--text-light); margin-bottom: 24px;">
-                    Ingresa tu clave de acceso para gestionar el catálogo.
-                </p>
+  <main class="main-content">
+    <!-- Login con token de GitHub -->
+    <section class="admin-login" id="loginSection">
+      <h2>Acceso administrador</h2>
+      <p class="small">
+        Ingresa tu token de GitHub para poder guardar los cambios en el catálogo.
+        El token se guarda solo en este navegador.
+      </p>
+      <label>
+        Token personal de GitHub
+        <input type="password" id="githubTokenInput" placeholder="ghp_xxxxxxxxx" />
+      </label>
+      <button class="btn btn-whatsapp full-width" id="guardarTokenBtn">
+        <span class="icon-circle">🔒</span>
+        <span>Guardar token y entrar</span>
+      </button>
+    </section>
 
-                <div class="form-group" style="text-align: left;">
-                    <label for="githubTokenInput">Clave de Acceso</label>
-                    <input type="password" id="githubTokenInput" class="form-control"
-                        placeholder="Pegar clave aquí..." />
-                </div>
+    <!-- Layout principal de administración -->
+    <section id="adminSection" style="display:none;">
+      <div class="admin-login" style="margin-bottom: 10px;">
+        <div style="display:flex; justify-content: space-between; align-items:center; gap:10px;">
+          <div>
+            <strong>Catálogo Luz Creaciones</strong>
+            <p class="small">Desde aquí agregas, editas y borras productos.</p>
+          </div>
+          <button class="btn" id="logoutBtn">Cerrar sesión</button>
+        </div>
+      </div>
 
-                <button id="guardarTokenBtn" class="btn btn-primary" style="width: 100%;">
-                    Entrar al Panel
-                </button>
-            </div>
-        </section>
+      <div class="admin-layout">
+        <!-- Formulario para agregar / editar -->
+        <article class="card admin-form-card">
+          <h2>Producto</h2>
+          <form id="formProducto" class="admin-form">
+            <label>
+              Nombre
+              <input type="text" id="nombre" required />
+            </label>
 
-        <!-- Admin Dashboard -->
-        <section id="adminSection" style="display:none;">
-            <div class="admin-layout">
+            <label>
+              Precio
+              <input type="number" id="precio" min="0" step="1" required />
+            </label>
 
-                <!-- Sidebar / Formulario -->
-                <aside>
-                    <div class="admin-card" style="position: sticky; top: 100px;">
-                        <h3 style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                            <span id="formTitle">Nuevo Producto</span>
-                        </h3>
+            <label>
+              Descripción
+              <textarea id="descripcion" rows="3"></textarea>
+            </label>
 
-                        <form id="formProducto">
-                            <input type="hidden" id="productoIndex" value="" />
+            <label>
+              Categoría
+              <select id="categoria" required>
+                <option value="bisuteria">Bisutería</option>
+                <option value="madera">Madera</option>
+              </select>
+            </label>
 
-                            <div class="form-group">
-                                <label>Nombre del producto</label>
-                                <input type="text" id="nombre" class="form-control" required />
-                            </div>
+            <label>
+              Imagen (se subirá a Cloudinary)
+              <input type="file" id="imagenInput" accept="image/*" />
+            </label>
 
-                            <div class="form-group">
-                                <label>Precio</label>
-                                <input type="number" id="precio" class="form-control" min="0" step="1" required />
-                            </div>
+            <div id="previewImagen" class="small" style="margin-top:6px;"></div>
 
-                            <div class="form-group">
-                                <label>Categoría</label>
-                                <select id="categoria" class="form-control">
-                                    <option value="bisuteria">Bisutería</option>
-                                    <option value="madera">Madera</option>
-                                </select>
-                            </div>
+            <input type="hidden" id="productoIndex" value="" />
 
-                            <div class="form-group">
-                                <label>Descripción</label>
-                                <textarea id="descripcion" class="form-control" rows="3"></textarea>
-                            </div>
+            <button type="submit" class="btn btn-whatsapp full-width" id="guardarProductoBtn">
+              <span class="icon-circle">💾</span>
+              <span>Guardar producto</span>
+            </button>
+          </form>
+        </article>
 
-                            <div class="form-group">
-                                <label>Imagen</label>
-                                <div class="file-upload" onclick="document.getElementById('imagenInput').click()">
-                                    <span style="font-size: 2rem;">📷</span>
-                                    <p style="margin: 8px 0 0; font-size: 0.9rem; color: var(--text-light);">
-                                        Clic para subir imagen
-                                    </p>
-                                    <input type="file" id="imagenInput" accept="image/*" style="display: none;" />
-                                </div>
-                                <div id="previewImagen" style="margin-top: 12px; text-align: center;"></div>
-                            </div>
+        <!-- Lista de productos -->
+        <article class="card admin-list-card">
+          <h2>Productos existentes</h2>
+          <p class="small">
+            Pulsa en <strong>Editar</strong> para modificar un producto, o en <strong>Eliminar</strong> para borrarlo.
+          </p>
+          <div id="listaProductos" class="lista-admin">
+            <!-- Rellenado por JS -->
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
 
-                            <div style="display: flex; gap: 10px;">
-                                <button type="submit" class="btn btn-primary" style="flex: 1;">Guardar</button>
-                                <button type="button" id="cancelarEditBtn" class="btn"
-                                    style="background: #f0f0f0; display: none;">Cancelar</button>
-                            </div>
-                        </form>
-                    </div>
-                </aside>
+  <footer class="site-footer">
+    <p>Solo para uso interno · Luz Creaciones</p>
+  </footer>
 
-                <!-- Product List -->
-                <div class="admin-content">
-                    <div class="admin-card">
-                        <div class="admin-header"
-                            style="display: flex; justify-content: space-between; align-items: center;">
-                            <h3>Inventario</h3>
-                            <span class="badge"
-                                style="background: var(--bg-body); padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; color: var(--text-light);">
-                                <span id="totalProductos">0</span> productos
-                            </span>
-                        </div>
-
-                        <div id="listaProductos" class="admin-grid">
-                            <!-- Renderizado por JS -->
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-    </main>
-
-    <!-- Toast Container -->
-    <div id="toastContainer" class="toast-container"></div>
-
-    <script src="admin.js"></script>
+  <script src="admin.js"></script>
 </body>
-
 </html>
