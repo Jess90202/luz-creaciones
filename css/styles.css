@@ -862,3 +862,16 @@ a {
   display: block;
 }
 
+
+.form-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem 1.4rem;
+}
+.form-cols textarea {
+  grid-column: span 2;
+}
+.form-cols button,
+.form-cols .form-footnote {
+  grid-column: span 2;
+}
