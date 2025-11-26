@@ -1,2 +1,0 @@
-# luz-creaciones
-Catalogo
