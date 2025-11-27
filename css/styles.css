@@ -83,7 +83,14 @@ a {
 }
 
 .eyebrow {
-  text-trans.two-col {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: var(--accent-strong);
+  margin-bottom: 0.35rem;
+}
+
+.two-col {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr);
   gap: 2.5rem;
