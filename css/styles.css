@@ -982,3 +982,48 @@ main li {
   }
 }
 
+
+
+/* === Overrides para layout tipo SPA card === */
+.section-alt {
+  background: transparent;
+  border-top: none;
+  border-bottom: none;
+}
+
+.section-alt .shell.two-col {
+  background: var(--bg-elevated);
+  border-radius: 1.8rem;
+  box-shadow: var(--shadow-soft);
+  padding: 2.5rem 2.6rem;
+}
+
+/* Tarjetas internas tipo card blanca */
+.highlight-card,
+.info-card,
+.pricing-card,
+.benefit-card {
+  background: var(--bg-elevated-soft);
+  border-radius: 1.5rem;
+  box-shadow: 0 18px 40px rgba(15, 5, 0, 0.12);
+}
+
+/* Layout responsivo: una sola columna en móvil */
+@media (max-width: 880px) {
+  .hero-grid,
+  .two-col {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section-alt .shell.two-col {
+    padding: 2.1rem 1.7rem;
+  }
+
+  .highlight-card {
+    margin-top: 1.9rem;
+  }
+
+  .section {
+    padding: 3.6rem 0 3.1rem;
+  }
+}
