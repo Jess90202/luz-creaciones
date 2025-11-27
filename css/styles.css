@@ -83,7 +83,14 @@ a {
 }
 
 .eyebrow {
-  text-trans.two-col {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: var(--accent-strong);
+  margin-bottom: 0.35rem;
+}
+
+.two-col {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(0, 1.2fr);
   gap: 2.5rem;
@@ -775,7 +782,7 @@ a {
 }
 
 
-/* --- Custom hover effects for cards --- */
+/* --- Custom hover effects for info cards --- */
 .hero-card-inner,
 .highlight-card,
 .pricing-card,
@@ -801,11 +808,13 @@ a {
 }
 
 /* Logo in header */
+/
 .brand-logo {
   height: 42px;
   width: auto;
   display: block;
 }
+
 
 /* Centered Ubicación block */
 #ubicacion .shell {
@@ -831,9 +840,6 @@ a {
 }
 
 .contact-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.2fr);
-  gap: 2.4rem;
   align-items: stretch;
 }
 
@@ -841,64 +847,31 @@ a {
   background:
     radial-gradient(circle at top, rgba(255, 206, 110, 0.08), transparent 60%),
     var(--bg-elevated);
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 206, 110, 0.35);
-  padding: 1.6rem 1.4rem 1.4rem;
+  border-color: rgba(255, 206, 110, 0.35);
   box-shadow: var(--shadow-soft);
-  font-size: 0.9rem;
 }
 
-.contact-card h3 {
-  margin-top: 0;
-  margin-bottom: 0.9rem;
+.contact-card .btn-full {
+  margin-top: 0.35rem;
 }
 
-/* Two-column form inside contact card (desktop) */
+/* Logo in header (ensures logo scales nicely) */
+.brand-logo {
+  height: 42px;
+  width: auto;
+  display: block;
+}
+
+
 .form-cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem 1.4rem;
 }
-
-.form-cols input[type="hidden"] {
-  grid-column: span 2;
-}
-
-.form-cols label,
-.form-cols input,
-.form-cols select {
-  width: 100%;
-}
-
 .form-cols textarea {
   grid-column: span 2;
 }
-
 .form-cols button,
 .form-cols .form-footnote {
   grid-column: span 2;
 }
-
-/* Responsive adjustments for contact section & form */
-@media (max-width: 900px) {
-  .contact-grid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 2rem;
-  }
-
-  .contact-card {
-    max-width: 640px;
-    margin: 0 auto;
-  }
-
-  .form-cols {
-    grid-template-columns: 1fr;
-  }
-
-  .form-cols textarea,
-  .form-cols button,
-  .form-cols .form-footnote {
-    grid-column: span 1;
-  }
-}
-
