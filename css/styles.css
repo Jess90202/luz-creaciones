@@ -775,7 +775,14 @@ a {
 }
 
 
-/* --- Hover effects for main cards (including services) --- */
+/* Logo in header */
+.brand-logo {
+  height: 42px;
+  width: auto;
+  display: block;
+}
+
+/* Hover effects for main cards (incl. servicios) */
 .hero-card-inner,
 .highlight-card,
 .pricing-card,
@@ -800,13 +807,6 @@ a {
     var(--bg-elevated-soft);
 }
 
-/* Logo in header */
-.brand-logo {
-  height: 42px;
-  width: auto;
-  display: block;
-}
-
 /* Ubicación centrada */
 #ubicacion .shell {
   text-align: center;
@@ -823,7 +823,17 @@ a {
   margin-top: 1rem;
 }
 
-/* CONTACTO – integración visual */
+/* Estilo de iconos wellness – lineal dorado suave */
+.hero-list i,
+.check-list i,
+.contact-info i,
+.hero-badge i {
+  color: var(--accent-strong);
+  margin-right: 0.45rem;
+  font-size: 0.95rem;
+}
+
+/* CONTACTO – integrar mejor texto y formulario */
 .section.section-alt {
   background:
     radial-gradient(circle at top left, rgba(255, 206, 110, 0.06), transparent 55%),
@@ -837,13 +847,14 @@ a {
   align-items: flex-start;
 }
 
+/* Tarjeta de formulario más compacta */
 .contact-card {
   background:
     radial-gradient(circle at top, rgba(255, 206, 110, 0.08), transparent 60%),
     var(--bg-elevated);
   border-radius: var(--radius-lg);
   border: 1px solid rgba(255, 206, 110, 0.35);
-  padding: 1.6rem 1.4rem 1.35rem;
+  padding: 1.5rem 1.4rem 1rem;
   box-shadow: var(--shadow-soft);
   font-size: 0.9rem;
 }
@@ -853,7 +864,18 @@ a {
   margin-bottom: 0.85rem;
 }
 
-/* Two-column form layout */
+.contact-card textarea {
+  min-height: 90px;
+}
+
+.form-footnote {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+  margin-bottom: 0;
+}
+
+/* Layout interno en columnas para el formulario */
 .form-cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -872,7 +894,6 @@ a {
 
 .form-cols textarea {
   grid-column: span 2;
-  min-height: 110px;
 }
 
 .form-cols button,
@@ -880,12 +901,14 @@ a {
   grid-column: span 2;
 }
 
-/* Textarea + button adjustments */
-.contact-card textarea {
-  resize: vertical;
+/* Texto justificado en toda la página (contenido principal) */
+main p,
+main li {
+  text-align: justify;
+  text-justify: inter-word;
 }
 
-/* Responsive – que no se vea tan grande en móvil */
+/* Responsive ajustes contacto */
 @media (max-width: 900px) {
   .contact-grid {
     grid-template-columns: minmax(0, 1fr);
@@ -905,7 +928,7 @@ a {
   }
 
   .contact-card {
-    padding: 1.25rem 1.1rem 1.1rem;
+    padding: 1.3rem 1.1rem 0.9rem;
     border-radius: 1.25rem;
   }
 
@@ -924,7 +947,7 @@ a {
   }
 
   .contact-card textarea {
-    min-height: 96px;
+    min-height: 84px;
     font-size: 0.85rem;
   }
 }
