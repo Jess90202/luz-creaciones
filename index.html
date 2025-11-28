@@ -518,7 +518,7 @@
     <div class="shell footer-grid">
       <div>
         <div class="brand-inline">
-          <div class="brand-mark">21</div>
+          <img src="img/logo-wellness21pm.png" alt="Wellness 21PM" class="footer-logo" />
           <span class="brand-name">Wellness 21PM</span>
         </div>
         <p>Masaje terapéutico y deportivo, tu bienestar a un masaje de distacia.</p>
@@ -530,6 +530,7 @@
     </div>
   </footer>
 
+  <script src="js/main.js"></script>
 
   <!-- Asistente con IA (recomendador de servicios) -->
   <div class="ai-chat-widget">
@@ -542,9 +543,9 @@
       <div class="ai-chat-header">
         <div>
           <h3>Asistente Wellness 21PM</h3>
-          <p>Te haré 3 preguntas para recomendarte el mejor servicio.</p>
+          <p>Cuéntame qué sientes y te guío.</p>
         </div>
-        <button class="ai-chat-close" type="button" aria-label="Cerrar chat">&times;</button>
+        <button class="ai-chat-close" type="button">&times;</button>
       </div>
 
       <div class="ai-chat-messages" id="aiChatMessages"></div>
@@ -555,7 +556,7 @@
           id="aiChatText"
           name="aiChatText"
           autocomplete="off"
-          placeholder="Escribe tu respuesta aquí..."
+          placeholder="Describe tu dolor o molestia (ej. dolor de espalda baja, estrés, piernas cansadas)..."
           required
         />
         <button type="submit" aria-label="Enviar mensaje">
@@ -565,7 +566,5 @@
     </div>
   </div>
 
-
-  <script src="js/main.js"></script>
 </body>
 </html>
