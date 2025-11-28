@@ -1298,3 +1298,10 @@ main li {
   }
 }
 
+/* Ajuste específico: tarjeta "Tu terapeuta" más ancha en móvil */
+@media (max-width: 520px) {
+  .hero-card-inner {
+    margin-inline: -0.4rem;
+  }
+}
+
