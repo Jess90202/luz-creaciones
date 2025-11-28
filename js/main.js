@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let conversationStage = "askName"; // askName → askSymptoms → ready
   let lastRecommendationSummary = "";
   let lastOptimalPlan = "";
-  let lastPackage = "";
 
   const userProfile = {
     name: "",
@@ -325,40 +324,6 @@ document.addEventListener("DOMContentLoaded", () => {
         "</ul>"
       : "";
 
-    // Selección de paquete según síntomas, intensidad y duración
-    const intensidad = parseInt(profile.intensity || "5", 10);
-    const tLower = (profile.duration || "").toLowerCase();
-
-    const sintomasPiernasCirculacion = /piernas pesadas|circulaci[oó]n|retenci[oó]n de l[ií]quidos|hinchaz[oó]n|varices/.test(t);
-    const mencionaEstres = /estr[eé]s|ansiedad|no puedo dormir|insomnio|cansancio mental/.test(t);
-    const posibleCronico = intensidad >= 8 || /mucho tiempo|meses|a[ñn]os|cr[oó]nico/.test(tLower);
-    const tienePresoterapia = recs.some(r => r.service === "Presoterapia");
-
-    let paquete = "Paquete Esencial";
-    let paqueteDetalle = "Enfoque en una zona específica (cuello, espalda baja, hombro, rodilla, ciática, etc.).";
-
-    if (posibleCronico) {
-      paquete = "Masaje Renacer";
-      paqueteDetalle =
-        "Paquete integral con masaje de cuerpo completo, presoterapia, pistola de infrarrojo, láser, acupuntura y ventosas. Ideal para dolor crónico, lesiones deportivas o estrés muy acumulado.";
-    } else if (tienePresoterapia || sintomasPiernasCirculacion) {
-      paquete = "Paquete Plus";
-      paqueteDetalle =
-        "Masaje profundo combinado con presoterapia, pistola de infrarrojo y acupuntura en puntos estratégicos. Ideal para piernas cansadas, mala circulación, dolor lumbar o cervical moderado.";
-    } else if (mencionaEstres) {
-      paquete = "Masaje Manual de Cuerpo Completo";
-      paqueteDetalle =
-        "Sesión de masaje de cuerpo completo sin aparatos, enfocada en estrés generalizado, tensión acumulada y descanso profundo.";
-    } else if (intensidad <= 3 && /d[ií]as|reciente|poco tiempo|hace poco/.test(tLower)) {
-      paquete = "Paquete Esencial";
-      paqueteDetalle =
-        "Masaje profundo focalizado y técnicas como acupuntura y láser en una zona puntual. Ideal para molestias recientes o localizadas.";
-    } else {
-      paquete = "Paquete Plus";
-      paqueteDetalle =
-        "Combinación de masaje manual y tecnología para sobrecarga por ejercicio o trabajo físico intenso.";
-    }
-
     const replyHtml =
       "<p>Gracias por contarme lo que sientes" +
       (profile.name ? ", <strong>" + escapeHtml(profile.name) + "</strong>" : "") +
@@ -370,23 +335,11 @@ document.addEventListener("DOMContentLoaded", () => {
         ? "<p><strong>OBJETIVO PRINCIPAL:</strong> " + escapeHtml(profile.goal) + ".</p>"
         : "") +
       "<p>Según lo que me describes, los servicios que más pueden ayudarte son:</p>" +
-      "<ul>" +
-      listaHtml +
-      "</ul>" +
-      "<p><strong>Plan sugerido:</strong> " +
-      sesionesSugeridas +
-      ", con una frecuencia aproximada de " +
-      frecuencia +
-      ".</p>" +
+      "<ul>" + listaHtml + "</ul>" +
+      "<p><strong>Plan sugerido:</strong> " + sesionesSugeridas + ", con una frecuencia aproximada de " + frecuencia + ".</p>" +
       (planOptimo
         ? "<p><strong>Plan óptimo para tu caso:</strong> " + planOptimo + "</p>"
         : "") +
-      "<p><strong>Paquete recomendado:</strong> " +
-      paquete +
-      ".</p>" +
-      "<p>" +
-      paqueteDetalle +
-      "</p>" +
       complementosHtml +
       "<p>En cabina se ajusta todo según cómo llegues ese día y cómo vaya respondiendo tu cuerpo.</p>" +
       "<p><strong>¿Quieres que te ayude a agendar por WhatsApp?</strong></p>" +
@@ -395,11 +348,11 @@ document.addEventListener("DOMContentLoaded", () => {
       "</button>";
 
     const resumen = recs.map(s => s.service).join(", ");
+
     return {
       html: replyHtml,
       resumen,
-      planOptimo,
-      paquete
+      planOptimo
     };
   }
 
@@ -409,17 +362,22 @@ document.addEventListener("DOMContentLoaded", () => {
       chatOpenedOnce = true;
       addAssistantMessage(
         "<p>Hola, soy tu asistente de <strong>Wellness 21PM</strong>.</p>" +
-        "<p>Quiero ayudarte a elegir el mejor masaje, las técnicas adecuadas y el paquete ideal para ti.</p>" +
-        "<p>Para empezar, <strong>¿cómo te llamas?</strong></p>"
+        "<p>Para orientarte mejor necesito hacerte unas preguntitas rápidas:</p>" +
+        "<ol>" +
+        "<li>¿En qué parte del cuerpo sientes más la molestia?</li>" +
+        "<li>¿Qué te gustaría lograr: relajarte, mejorar rendimiento, circulación, aliviar dolor específico o equilibrio emocional?</li>" +
+        "<li>Del 0 al 10, ¿qué tan intenso es el dolor/molestia?</li>" +
+        "<li>¿Desde hace cuánto tiempo lo sientes?</li>" +
+        "</ol>" +
+        "<p>Cuéntame primero <strong>dónde se siente más</strong> (por ejemplo: espalda baja, cuello, hombros, piernas...).</p>"
       );
-      conversationStage = "askName";
+      conversationStage = "askGoal";
     }
   }
 
   function closeChat() {
     chatWindow.classList.remove("open");
   }
-
 
   chatToggle.addEventListener("click", () => {
     if (chatWindow.classList.contains("open")) {
@@ -458,14 +416,15 @@ document.addEventListener("DOMContentLoaded", () => {
       addAssistantMessage(
         "<p>Mucho gusto, <strong>" + escapeHtml(firstName) + "</strong>.</p>" +
         "<p>Ahora cuéntame con tus palabras <strong>qué sientes</strong>: " +
-        "en qué parte del cuerpo, desde cuándo, si haces ejercicio, si sientes mala circulación, si el dolor es leve o fuerte...</p>" +
+        "en qué parte del cuerpo, desde cuándo, si haces ejercicio, si sientes mala circulación, " +
+        "si el dolor es leve o fuerte, etc.</p>" +
         "<p>Con esa información te diré qué servicios de Wellness 21PM encajan mejor contigo y qué paquete te conviene más.</p>"
       );
       conversationStage = "askSymptoms";
       return;
     }
 
-    // Paso 2: descripción libre de síntomas
+    // Paso 2: una o varias descripciones libres de síntomas
     if (conversationStage === "askSymptoms" || conversationStage === "ready") {
       if (!userProfile.rawText) {
         userProfile.rawText = value;
@@ -473,30 +432,62 @@ document.addEventListener("DOMContentLoaded", () => {
         userProfile.rawText += " | " + value;
       }
 
-      if (!userProfile.zone) {
-        userProfile.zone = detectZone(value) || "";
-      }
-      if (!userProfile.goal) {
-        userProfile.goal = normalizeGoal(value) || "";
+      // Zona principal (podemos irla enriqueciendo si escribe varias veces)
+      const detectedZone = detectZone(value);
+      if (!userProfile.zone && detectedZone) {
+        userProfile.zone = detectedZone;
+      } else if (detectedZone && userProfile.zone && !userProfile.zone.includes(detectedZone)) {
+        userProfile.zone += " / " + detectedZone;
       }
 
-      const { html, resumen, planOptimo, paquete } = getRecommendations(userProfile);
+      // Objetivo principal (relajación, dolor específico, circulación, deportivo, etc.)
+      if (!userProfile.goal) {
+        const goalNorm = normalizeGoal(value);
+        if (goalNorm) {
+          userProfile.goal = goalNorm;
+        }
+      }
+
+      // Intensidad: si no la ha dicho explícitamente, intentamos deducirla o damos un valor medio (5)
+      if (!userProfile.intensity) {
+        const parsed = parseIntensity(value);
+        if (parsed) {
+          userProfile.intensity = parsed;
+        } else {
+          userProfile.intensity = "5";
+        }
+      }
+
+      // Duración aproximada: inferimos por palabras clave si podemos
+      if (!userProfile.duration) {
+        const lower = textLower;
+        if (/d[ií]as|dia|días|hace poco|reciente/.test(lower)) {
+          userProfile.duration = "pocos días";
+        } else if (/semanas/.test(lower)) {
+          userProfile.duration = "semanas";
+        } else if (/meses/.test(lower)) {
+          userProfile.duration = "meses";
+        } else if (/a[ñn]os|anos|cr[oó]nico/.test(lower)) {
+          userProfile.duration = "mucho tiempo / crónico";
+        }
+      }
+
+      const { html, resumen, planOptimo } = getRecommendations(userProfile);
       lastRecommendationSummary = resumen;
       lastOptimalPlan = planOptimo || "";
-      lastPackage = paquete || "";
       addAssistantMessage(html);
       conversationStage = "ready";
       return;
     }
 
-    // Si por cualquier motivo se desconfigura el flujo, volvemos a pedir síntomas
+    // Si por cualquier motivo se desconfigura el flujo, retomamos pidiendo síntomas
     addAssistantMessage(
       "<p>Voy a retomar la conversación.</p>" +
       "<p>Cuéntame nuevamente qué sientes y dónde, y te ayudo a elegir el mejor masaje y paquete.</p>"
     );
     conversationStage = "askSymptoms";
   });
-messagesEl.addEventListener("click", (e) => {
+  messagesEl.addEventListener("click", (e) => {
     const btn = e.target.closest(".ai-chat-whatsapp-btn");
     if (!btn) return;
 
@@ -509,12 +500,13 @@ messagesEl.addEventListener("click", (e) => {
       (userProfile.duration ? "Tiempo con la molestia: " + userProfile.duration + ". " : "") +
       "Mis síntomas/dolores descritos: " + (userProfile.rawText || "(no especificado)") + ". " +
       "Servicios recomendados: " + (lastRecommendationSummary || "(por definir)") + ". " +
-      (lastPackage ? "Paquete recomendado: " + lastPackage + ". " : "") +
+      (lastOptimalPlan ? "Plan óptimo sugerido: " + lastOptimalPlan + ". " : "") +
+      "¿Me ayudas a agendar una sesión?";)") + ". " +
+      "Servicios recomendados: " + (lastRecommendationSummary || "(por definir)") + ". " +
       (lastOptimalPlan ? "Plan óptimo sugerido: " + lastOptimalPlan + ". " : "") +
       "¿Me ayudas a agendar una sesión?";
 
     const texto = encodeURIComponent(textoPlano);
-extoPlano);
     const url = "https://wa.me/" + WHATSAPP_PHONE + "?text=" + texto;
     window.open(url, "_blank");
   });
