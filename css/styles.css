@@ -1257,3 +1257,44 @@ main li {
   }
 }
 
+/* ========= Ajustes móviles adicionales ========= */
+
+/* Logo de pie de página */
+.footer-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 12px 30px rgba(15, 5, 0, 0.30);
+}
+
+/* Menú y header en móvil/tablet */
+@media (max-width: 880px) {
+  /* Header fijo y con fondo sólido */
+  .site-header {
+    position: sticky;
+    top: 0;
+    background: var(--bg-body);
+    box-shadow: 0 12px 30px rgba(15, 5, 0, 0.22);
+  }
+
+  /* Menú móvil con colores acordes a la página */
+  .site-nav {
+    background: var(--bg-alt);
+    border-color: var(--border-subtle);
+  }
+
+  .site-nav a {
+    color: var(--text-main);
+  }
+
+  .nav-toggle {
+    background: var(--accent-soft);
+    border-color: var(--accent-strong);
+  }
+
+  .nav-toggle span {
+    background: var(--text-main);
+  }
+}
+
