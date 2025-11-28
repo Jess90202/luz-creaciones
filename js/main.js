@@ -362,16 +362,10 @@ document.addEventListener("DOMContentLoaded", () => {
       chatOpenedOnce = true;
       addAssistantMessage(
         "<p>Hola, soy tu asistente de <strong>Wellness 21PM</strong>.</p>" +
-        "<p>Para orientarte mejor necesito hacerte unas preguntitas rápidas:</p>" +
-        "<ol>" +
-        "<li>¿En qué parte del cuerpo sientes más la molestia?</li>" +
-        "<li>¿Qué te gustaría lograr: relajarte, mejorar rendimiento, circulación, aliviar dolor específico o equilibrio emocional?</li>" +
-        "<li>Del 0 al 10, ¿qué tan intenso es el dolor/molestia?</li>" +
-        "<li>¿Desde hace cuánto tiempo lo sientes?</li>" +
-        "</ol>" +
-        "<p>Cuéntame primero <strong>dónde se siente más</strong> (por ejemplo: espalda baja, cuello, hombros, piernas...).</p>"
+        "<p>Quiero ayudarte a elegir el mejor masaje, las tecnologías adecuadas y el paquete ideal para ti.</p>" +
+        "<p>Para comenzar, <strong>¿cómo te llamas?</strong></p>"
       );
-      conversationStage = "askGoal";
+      conversationStage = "askName";
     }
   }
 
@@ -424,7 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Paso 2: una o varias descripciones libres de síntomas
+    // Paso 2: una o varias descripciones libres de síntomas (ya podemos recomendar)
     if (conversationStage === "askSymptoms" || conversationStage === "ready") {
       if (!userProfile.rawText) {
         userProfile.rawText = value;
@@ -460,14 +454,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Duración aproximada: inferimos por palabras clave si podemos
       if (!userProfile.duration) {
-        const lower = textLower;
-        if (/d[ií]as|dia|días|hace poco|reciente/.test(lower)) {
+        if (/d[ií]as|dia|días|hace poco|reciente/.test(textLower)) {
           userProfile.duration = "pocos días";
-        } else if (/semanas/.test(lower)) {
+        } else if (/semanas/.test(textLower)) {
           userProfile.duration = "semanas";
-        } else if (/meses/.test(lower)) {
+        } else if (/meses/.test(textLower)) {
           userProfile.duration = "meses";
-        } else if (/a[ñn]os|anos|cr[oó]nico/.test(lower)) {
+        } else if (/a[ñn]os|anos|cr[oó]nico/.test(textLower)) {
           userProfile.duration = "mucho tiempo / crónico";
         }
       }
@@ -487,6 +480,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     conversationStage = "askSymptoms";
   });
+
   messagesEl.addEventListener("click", (e) => {
     const btn = e.target.closest(".ai-chat-whatsapp-btn");
     if (!btn) return;
@@ -501,13 +495,10 @@ document.addEventListener("DOMContentLoaded", () => {
       "Mis síntomas/dolores descritos: " + (userProfile.rawText || "(no especificado)") + ". " +
       "Servicios recomendados: " + (lastRecommendationSummary || "(por definir)") + ". " +
       (lastOptimalPlan ? "Plan óptimo sugerido: " + lastOptimalPlan + ". " : "") +
-      "¿Me ayudas a agendar una sesión?";)") + ". " +
-      "Servicios recomendados: " + (lastRecommendationSummary || "(por definir)") + ". " +
-      (lastOptimalPlan ? "Plan óptimo sugerido: " + lastOptimalPlan + ". " : "") +
       "¿Me ayudas a agendar una sesión?";
 
     const texto = encodeURIComponent(textoPlano);
     const url = "https://wa.me/" + WHATSAPP_PHONE + "?text=" + texto;
     window.open(url, "_blank");
-  });
+  });;
 });
