@@ -1,227 +1,487 @@
-﻿/* --- ARCHIVO: js/main.js --- */
+document.addEventListener("DOMContentLoaded", () => {
+  const yearEl = document.getElementById("year");
+  if (yearEl) {
+    yearEl.textContent = new Date().getFullYear();
+  }
 
-document.addEventListener('DOMContentLoaded', () => {
-    
-    // --- 1. MENÚ MÓVIL Y AÑO COPYRIGHT ---
-    const navToggle = document.querySelector('.nav-toggle');
-    const siteNav = document.querySelector('.site-nav');
-    
-    if(navToggle && siteNav) {
-        navToggle.addEventListener('click', () => {
-            siteNav.classList.toggle('show');
-            const iconSpan = navToggle.querySelectorAll('span');
-            // Animación simple del icono hamburguesa (opcional)
-            navToggle.classList.toggle('active');
+  const navToggle = document.querySelector(".nav-toggle");
+  const nav = document.querySelector(".site-nav");
+
+  if (navToggle && nav) {
+    navToggle.addEventListener("click", () => {
+      nav.classList.toggle("show");
+    });
+
+    nav.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("show");
+      });
+    });
+  }
+
+  // Scroll suave
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener("click", function(e) {
+      const targetId = this.getAttribute("href").slice(1);
+      const target = document.getElementById(targetId);
+      if (target) {
+        e.preventDefault();
+        window.scrollTo({
+          top: target.offsetTop - 72,
+          behavior: "smooth"
         });
-    }
-
-    const yearSpan = document.getElementById('year');
-    if(yearSpan) {
-        yearSpan.textContent = new Date().getFullYear();
-    }
-
-    // --- 2. LÓGICA DEL ASISTENTE INTELIGENTE ---
-    initAIChat();
+      }
+    });
+  });
 });
 
-function initAIChat() {
-    const toggleBtn = document.querySelector('.ai-chat-toggle');
-    const closeBtn = document.querySelector('.ai-chat-close');
-    const chatWindow = document.querySelector('.ai-chat-window');
-    const chatForm = document.getElementById('aiChatForm');
-    const chatInput = document.getElementById('aiChatText');
-    const messagesContainer = document.getElementById('aiChatMessages');
+// ============ CHAT IA WELLNESS 21PM 3.0 ============
+document.addEventListener("DOMContentLoaded", () => {
+  const chatWidget = document.querySelector(".ai-chat-widget");
+  if (!chatWidget) return;
 
-    // Estado del chat
-    let isChatOpen = false;
+  const chatToggle = chatWidget.querySelector(".ai-chat-toggle");
+  const chatWindow = chatWidget.querySelector(".ai-chat-window");
+  const chatClose = chatWidget.querySelector(".ai-chat-close");
+  const messagesEl = document.getElementById("aiChatMessages");
+  const formEl = document.getElementById("aiChatForm");
+  const inputEl = document.getElementById("aiChatText");
 
-    // --- BASE DE CONOCIMIENTO (Reglas del experto) ---
-    const knowledgeBase = [
-        {
-            keywords: ['espalda baja', 'lumbar', 'cintura', 'sentado', 'oficina', 'silla'],
-            response: "El dolor en espalda baja es muy común por posturas prolongadas. Para esto, la combinación de calor profundo y masaje es vital.",
-            recommendation: {
-                name: "Paquete Plus ($650)",
-                reason: "Incluye pistola de infrarrojo para ablandar el tejido profundo y presoterapia si pasas mucho tiempo sentado.",
-                link: "Hola, mi asistente me recomendó el Paquete Plus para dolor de espalda baja."
-            }
-        },
-        {
-            keywords: ['cuello', 'hombro', 'trapecio', 'cabeza', 'migraña', 'tensión', 'dormir mal'],
-            response: "Esa tensión en cuello y hombros suele acumularse por estrés o mala postura al dormir. Necesitamos soltar los 'nudos' específicos.",
-            recommendation: {
-                name: "Paquete Esencial ($300) o Masaje Descontracturante",
-                reason: "Si es una zona muy específica (ej. tortícolis), el Esencial es perfecto. Si es tensión general, el Plus ayuda a relajar todo el tren superior.",
-                link: "Hola, tengo dolor en cuello/hombros y me interesa el Paquete Esencial o Plus."
-            }
-        },
-        {
-            keywords: ['piernas', 'correr', 'futbol', 'bici', 'caminar', 'cansadas', 'varices', 'circulación', 'hinchazón'],
-            response: "Para piernas cansadas o cargadas por deporte/actividad, lo mejor es ayudar al retorno venoso y descargar el músculo.",
-            recommendation: {
-                name: "Paquete Plus ($650) con Presoterapia",
-                reason: "La presoterapia es la estrella aquí: comprime y descomprime para reactivar la circulación, sumado al masaje manual.",
-                link: "Hola, me interesa el Paquete Plus con énfasis en presoterapia para piernas."
-            }
-        },
-        {
-            keywords: ['estrés', 'ansiedad', 'relajar', 'descanso', 'paz', 'tranquilo', 'desconectar'],
-            response: "Si tu objetivo principal es desconectar la mente y soltar el cuerpo, evitemos el dolor intenso y busquemos fluidez.",
-            recommendation: {
-                name: "Masaje Manual de Cuerpo Completo ($500)",
-                reason: "50-70 minutos dedicados puramente a bajar las revoluciones de tu sistema nervioso.",
-                link: "Hola, busco un Masaje de Cuerpo Completo para relajarme."
-            }
-        },
-        {
-            keywords: ['lesión', 'esguince', 'torcedura', 'golpe', 'crónico', 'mucho tiempo', 'duele mucho', 'fuerte'],
-            response: "Cuando hay dolor agudo, lesiones o molestias crónicas rebeldes, necesitamos usar toda la tecnología disponible.",
-            recommendation: {
-                name: "Masaje Renacer ($850)",
-                reason: "Incluye láser para regeneración celular, acupuntura para el dolor y todo el protocolo manual. Es el tratamiento más completo.",
-                link: "Hola, tengo una lesión/dolor crónico y me interesa el Masaje Renacer."
-            }
-        },
-        {
-            keywords: ['precio', 'costo', 'cuesta', 'paquetes', 'valor'],
-            response: "Manejamos paquetes desde $300 MXN (zona específica) hasta $850 MXN (experiencia completa con toda la tecnología).",
-            recommendation: {
-                name: "Ver sección de Precios",
-                reason: "Depende de qué tanto tiempo y tecnología necesite tu cuerpo hoy.",
-                link: "Hola, quisiera más información sobre los precios."
-            }
-        },
-        {
-            keywords: ['ubicación', 'donde', 'lugar', 'dirección', 'cdmx'],
-            response: "Estamos ubicados en CDMX. Damos servicio en consultorio y también a domicilio (con costo extra).",
-            recommendation: {
-                name: "Agendar Cita",
-                reason: "Mándame un WhatsApp para enviarte la ubicación exacta.",
-                link: "Hola, ¿me podrías compartir la ubicación exacta?"
-            }
-        }
-    ];
+  const WHATSAPP_PHONE = "5585662464";
 
-    // Respuesta por defecto
-    const defaultResponse = "Entiendo. Cada cuerpo es distinto. Basado en lo que me cuentas, lo ideal es evaluar si es tensión muscular o algo más profundo.";
-    const defaultRec = {
-        name: "Consulta Personalizada",
-        reason: "Escríbeme por WhatsApp para contarme tu caso y decirte qué te conviene.",
-        link: "Hola, tengo una duda específica sobre mi dolor, ¿podemos hablar?"
+  // Estado de la conversación
+  let chatOpenedOnce = false;
+  let conversationStage = "intro"; // intro → askGoal → askIntensity → askDuration → ready
+  let lastRecommendationSummary = "";
+  let lastOptimalPlan = "";
+
+  const userProfile = {
+    rawText: "",
+    zone: "",
+    goal: "",
+    intensity: "",
+    duration: ""
+  };
+
+  function escapeHtml(str) {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function addMessage(html, type) {
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("ai-chat-message");
+    wrapper.classList.add(type === "user" ? "ai-chat-user" : "ai-chat-assistant");
+    wrapper.innerHTML = html;
+    messagesEl.appendChild(wrapper);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function addAssistantMessage(html) {
+    addMessage(html, "assistant");
+  }
+
+  function addUserMessage(text) {
+    addMessage("<p>" + escapeHtml(text) + "</p>", "user");
+  }
+
+  function hasRedFlags(text) {
+    const t = text.toLowerCase();
+    return /dolor en el pecho|pecho apretado|falta de aire|no puedo respirar|desmayo|p[eé]rdida de conciencia|par[aá]lisis|cara chueca|hablo raro|embarazo de riesgo|sangrado abundante/.test(
+      t
+    );
+  }
+
+  function detectZone(text) {
+    const t = text.toLowerCase();
+    if (/espalda baja|lumba|lumbar/.test(t)) return "espalda baja / zona lumbar";
+    if (/espalda alta|dorsal|om[oó]platos/.test(t)) return "espalda alta";
+    if (/cuello|nuca/.test(t)) return "cuello / nuca";
+    if (/hombro/.test(t)) return "hombros";
+    if (/pierna|muslo|pantorrilla|pantorrillas|rodilla|rodillas/.test(t)) return "piernas";
+    if (/pie|pies|planta/.test(t)) return "pies";
+    if (/cabeza|migra[ñn]a|cefalea/.test(t)) return "cabeza";
+    return "";
+  }
+
+  function normalizeGoal(text) {
+    const t = text.toLowerCase();
+    if (/relaj|estr[eé]s|descansar|ansiedad|insomnio/.test(t)) return "relajación / manejo de estrés";
+    if (/deport|rendimiento|gym|gimnasio|entrenamiento|competencia|marat[oó]n/.test(t))
+      return "rendimiento deportivo / recuperación";
+    if (/circulaci[oó]n|piernas pesadas|retenci[oó]n|hinchaz[oó]n|varices/.test(t))
+      return "mejorar circulación / piernas ligeras";
+    if (/dolor|contractura|nudo|tort[ií]colis|lumbalgia/.test(t))
+      return "aliviar dolor específico";
+    if (/emocional|estado de [aá]nimo|hormonal|estr[eé]s emocional/.test(t)) return "equilibrio emocional";
+    return "";
+  }
+
+  function parseIntensity(text) {
+    const match = text.match(/(\d{1,2})/);
+    if (!match) return "";
+    const value = parseInt(match[1], 10);
+    if (isNaN(value)) return "";
+    if (value < 0) return "0";
+    if (value > 10) return "10";
+    return String(value);
+  }
+
+  function getRecommendations(profile) {
+    const t = profile.rawText.toLowerCase();
+    const recs = [];
+
+    function add(service, reason, prioridad) {
+      recs.push({ service, reason, prioridad });
+    }
+
+    // Base según síntomas
+    if (/(deport|gym|gimnasio|correr|marat[oó]n|entreno|entrenamiento|partido|f[úu]tbol)/.test(t)) {
+      add(
+        "Masaje atlético deportivo",
+        "Recuperación post-entrenamiento, prevención de lesiones y descarga muscular.",
+        1
+      );
+    }
+
+    if (/(estr[eé]s|ansiedad|cansancio mental|agotad[oa]|no puedo dormir|insomnio)/.test(t)) {
+      add(
+        "Masaje antiestrés",
+        "Liberar tensión general, mejorar sueño y bajar la carga del sistema nervioso.",
+        1
+      );
+    }
+
+    if (/(contractura|nudo|tort[ií]colis|rigidez|espalda alta|espalda baja|lumbalgia|cuello|hombro)/.test(
+      t
+    )) {
+      add(
+        "Masaje descontracturante",
+        "Trabajo específico sobre puntos de dolor, rigidez y contracturas.",
+        1
+      );
+    }
+
+    if (/(piernas pesadas|retenci[oó]n de l[ií]quidos|circulaci[oó]n|hinchaz[oó]n|edema|varices)/.test(
+      t
+    )) {
+      add(
+        "Presoterapia",
+        "Mejorar retorno venoso, aliviar pesadez y favorecer drenaje.",
+        1
+      );
+    }
+
+    if (/(cr[oó]nico|migra[ñn]a|cefalea|nervio ci[aá]tico|ci[aá]tica|emocional|ansiedad fuerte|hormonal)/.test(
+      t
+    )) {
+      add(
+        "Acupuntura y electroacupuntura",
+        "Apoyo en dolor crónico, migrañas, ciática y regulación emocional.",
+        2
+      );
+    }
+
+    if (/(dolor agudo|punzante|postoperatorio|post-operatorio)/.test(t)) {
+      add("TENS", "Modulación de dolor agudo localizado y procesos postoperatorios.", 2);
+    }
+
+    if (/(muy rigido|muy r[ií]gido|espalda trabada|espalda hecha nudo|no me puedo mover)/.test(t)) {
+      add("Ventosas", "Liberación de fascia y descarga profunda de zonas muy cargadas.", 2);
+    }
+
+    if (/(punto gatillo|trigger point|punto muy específico|bolita de dolor)/.test(t)) {
+      add(
+        "Pistola de infrarrojo y de percusión",
+        "Trabajo localizado en puntos gatillo y tejidos profundos.",
+        2
+      );
+    }
+
+    if (/(inflamaci[oó]n|esguince|tendinitis|fascitis|tend[oó]n|ligamento)/.test(t)) {
+      add(
+        "Láser 808 y 650 nm",
+        "Apoyo a reparación tisular y procesos inflamatorios en tejidos blandos.",
+        2
+      );
+    }
+
+    if (/(mucho tiempo|a[ñn]os|recae|reca[ií]da|varias zonas|todo el cuerpo)/.test(t)) {
+      add(
+        "Planes de seguimiento",
+        "Trabajar tu caso en varias sesiones con ajustes progresivos.",
+        3
+      );
+    }
+
+    // Complementos según objetivo
+    if (profile.goal === "relajación / manejo de estrés" && !recs.find(r => r.service === "Masaje antiestrés")) {
+      add(
+        "Masaje antiestrés",
+        "Base para relajar sistema nervioso y mejorar calidad de descanso.",
+        1
+      );
+    }
+
+    if (
+      profile.goal === "rendimiento deportivo / recuperación" &&
+      !recs.find(r => r.service === "Masaje atlético deportivo")
+    ) {
+      add(
+        "Masaje atlético deportivo",
+        "Descarga muscular y recuperación entre entrenamientos.",
+        1
+      );
+    }
+
+    if (
+      profile.goal === "mejorar circulación / piernas ligeras" &&
+      !recs.find(r => r.service === "Presoterapia")
+    ) {
+      add(
+        "Presoterapia",
+        "Apoyo circulatorio y sensación de ligereza en piernas.",
+        1
+      );
+    }
+
+    if (
+      profile.goal === "equilibrio emocional" &&
+      !recs.find(r => r.service === "Acupuntura y electroacupuntura")
+    ) {
+      add(
+        "Acupuntura y electroacupuntura",
+        "Regulación del sistema nervioso y del estado emocional.",
+        2
+      );
+    }
+
+    if (!recs.length) {
+      add(
+        "Masaje antiestrés",
+        "Primera opción para liberar tensión general y observar respuesta de tu cuerpo.",
+        1
+      );
+    }
+
+    // Ordenar por prioridad
+    recs.sort((a, b) => a.prioridad - b.prioridad);
+
+    // Planes según intensidad y duración
+    let sesionesSugeridas = "1 a 3 sesiones";
+    let frecuencia = "1 vez por semana";
+    let planOptimo = "";
+    const intensidad = parseInt(profile.intensity || "5", 10);
+    const tLower = (profile.duration || "").toLowerCase();
+
+    if (intensidad >= 8 || /mucho tiempo|meses|a[ñn]os|cr[oó]nico/.test(tLower)) {
+      sesionesSugeridas = "4 a 8 sesiones";
+      frecuencia = "1 a 2 veces por semana";
+      planOptimo =
+        "Plan intensivo: iniciar con 1 a 2 sesiones por semana y después espaciar según cómo respondas.";
+    } else if (intensidad <= 3 && /d[ií]as|reciente|poco tiempo|hace poco/.test(tLower)) {
+      sesionesSugeridas = "1 a 2 sesiones";
+      frecuencia = "según evolución de tus síntomas";
+      planOptimo =
+        "Plan preventivo: 1 sesión puntual y después mantenimiento ocasional para evitar que se vuelva crónico.";
+    } else {
+      planOptimo =
+        "Plan equilibrado: comenzar con una sesión semanal y reajustar según disminuya el dolor y la tensión.";
+    }
+
+    // Complementos generales
+    const complementos = [];
+    if (/estr[eé]s|ansiedad|insomnio/.test(t)) {
+      complementos.push("pequeñas pausas de respiración profunda durante el día");
+    }
+    if (/deport|gym|entreno/.test(t)) {
+      complementos.push("trabajo de estiramientos específicos después de entrenar");
+    }
+    if (/piernas pesadas|circulaci[oó]n/.test(t)) {
+      complementos.push("elevar piernas algunos minutos al final del día");
+    }
+
+    const listaHtml = recs
+      .map(
+        (s, index) =>
+          "<li><strong>" +
+          (index === 0 ? "Principal: " : "") +
+          s.service +
+          "</strong>: " +
+          s.reason +
+          "</li>"
+      )
+      .join("");
+
+    const complementosHtml = complementos.length
+      ? "<p><strong>Recomendaciones complementarias:</strong></p><ul>" +
+        complementos.map(c => "<li>" + c + "</li>").join("") +
+        "</ul>"
+      : "";
+
+    const replyHtml =
+      "<p>Gracias por contarme lo que sientes.</p>" +
+      (profile.zone
+        ? "<p><strong>ZONA PRINCIPAL:</strong> " + escapeHtml(profile.zone) + ".</p>"
+        : "") +
+      (profile.goal
+        ? "<p><strong>OBJETIVO PRINCIPAL:</strong> " + escapeHtml(profile.goal) + ".</p>"
+        : "") +
+      "<p>Según lo que me describes, los servicios que más pueden ayudarte son:</p>" +
+      "<ul>" + listaHtml + "</ul>" +
+      "<p><strong>Plan sugerido:</strong> " + sesionesSugeridas + ", con una frecuencia aproximada de " + frecuencia + ".</p>" +
+      (planOptimo
+        ? "<p><strong>Plan óptimo para tu caso:</strong> " + planOptimo + "</p>"
+        : "") +
+      complementosHtml +
+      "<p>En cabina se ajusta todo según cómo llegues ese día y cómo vaya respondiendo tu cuerpo.</p>" +
+      "<p><strong>¿Quieres que te ayude a agendar por WhatsApp?</strong></p>" +
+      '<button class="ai-chat-whatsapp-btn" type="button">' +
+      '<i class="fa-brands fa-whatsapp"></i> Sí, agendar por WhatsApp' +
+      "</button>";
+
+    const resumen = recs.map(s => s.service).join(", ");
+
+    return {
+      html: replyHtml,
+      resumen,
+      planOptimo
     };
+  }
 
-    // --- FUNCIONES DE UI ---
+  function openChat() {
+    chatWindow.classList.add("open");
+    if (!chatOpenedOnce) {
+      chatOpenedOnce = true;
+      addAssistantMessage(
+        "<p>Hola, soy tu asistente de <strong>Wellness 21PM</strong>.</p>" +
+        "<p>Para orientarte mejor necesito hacerte unas preguntitas rápidas:</p>" +
+        "<ol>" +
+        "<li>¿En qué parte del cuerpo sientes más la molestia?</li>" +
+        "<li>¿Qué te gustaría lograr: relajarte, mejorar rendimiento, circulación, aliviar dolor específico o equilibrio emocional?</li>" +
+        "<li>Del 0 al 10, ¿qué tan intenso es el dolor/molestia?</li>" +
+        "<li>¿Desde hace cuánto tiempo lo sientes?</li>" +
+        "</ol>" +
+        "<p>Cuéntame primero <strong>dónde se siente más</strong> (por ejemplo: espalda baja, cuello, hombros, piernas...).</p>"
+      );
+      conversationStage = "askGoal";
+    }
+  }
 
-    function toggleChat() {
-        isChatOpen = !isChatOpen;
-        chatWindow.classList.toggle('open', isChatOpen);
-        if (isChatOpen) {
-            chatInput.focus();
-            // Mensaje de bienvenida si está vacío
-            if (messagesContainer.children.length === 0) {
-                addMessage("¡Hola! Soy el asistente virtual de Wellness 21PM. 🤖<br>Cuéntame, ¿qué dolor o molestia sientes hoy? (Ej: 'Me duele la espalda baja' o 'Corrí un maratón')", 'ai');
-            }
-        }
+  function closeChat() {
+    chatWindow.classList.remove("open");
+  }
+
+  chatToggle.addEventListener("click", () => {
+    if (chatWindow.classList.contains("open")) {
+      closeChat();
+    } else {
+      openChat();
+    }
+  });
+
+  chatClose.addEventListener("click", closeChat);
+
+  formEl.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const value = inputEl.value.trim();
+    if (!value) return;
+
+    addUserMessage(value);
+    inputEl.value = "";
+
+    const textLower = value.toLowerCase();
+
+    // Seguridad básica
+    if (hasRedFlags(textLower)) {
+      addAssistantMessage(
+        "<p>Lo que me describes puede ser un <strong>signo de alarma</strong>.</p>" +
+        "<p>Te recomiendo acudir de inmediato a un servicio de urgencias o contactar a tu médico de confianza antes de considerar cualquier tipo de masaje o terapia.</p>" +
+        "<p>Si es una emergencia, no esperes una cita, busca ayuda presencial cuanto antes.</p>"
+      );
+      return;
     }
 
-    // Agregar mensaje al DOM
-    function addMessage(htmlContent, sender) {
-        const msgDiv = document.createElement('div');
-        msgDiv.classList.add('ai-chat-message');
-        msgDiv.classList.add(sender === 'user' ? 'ai-chat-user' : 'ai-chat-assistant');
-        msgDiv.innerHTML = htmlContent;
-        messagesContainer.appendChild(msgDiv);
-        scrollToBottom();
+    if (!userProfile.rawText) {
+      userProfile.rawText = value;
+    } else {
+      userProfile.rawText += " | " + value;
     }
 
-    // Indicador de "Escribiendo..."
-    function showTyping() {
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'typing-indicator';
-        typingDiv.id = 'typingIndicator';
-        typingDiv.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
-        messagesContainer.appendChild(typingDiv);
-        scrollToBottom();
+    if (!userProfile.zone) {
+      const zoneDetected = detectZone(value);
+      userProfile.zone = zoneDetected || value;
+      addAssistantMessage(
+        "<p>Perfecto, gracias.</p>" +
+        "<p>Ahora dime: <strong>¿qué te gustaría lograr principalmente?</strong> " +
+        "(por ejemplo: relajarte, aliviar un dolor en específico, mejorar rendimiento deportivo, mejorar circulación, equilibrio emocional...)</p>"
+      );
+      conversationStage = "askIntensity";
+      return;
     }
 
-    function removeTyping() {
-        const typingDiv = document.getElementById('typingIndicator');
-        if(typingDiv) typingDiv.remove();
+    if (!userProfile.goal && conversationStage === "askIntensity") {
+      const goalNorm = normalizeGoal(value);
+      userProfile.goal = goalNorm || value;
+      addAssistantMessage(
+        "<p>Listo.</p>" +
+        "<p>Del <strong>0 al 10</strong>, donde 0 es nada de dolor y 10 es el dolor más fuerte que puedas imaginar, " +
+        "¿<strong>qué número</strong> describe mejor lo que sientes?</p>"
+      );
+      conversationStage = "askDuration";
+      return;
     }
 
-    function scrollToBottom() {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    if (!userProfile.intensity && conversationStage === "askDuration") {
+      const intensity = parseIntensity(value);
+      userProfile.intensity = intensity || value;
+      addAssistantMessage(
+        "<p>Gracias.</p>" +
+        "<p>Por último, <strong>¿desde hace cuánto</strong> sientes esto? (por ejemplo: desde hace 3 días, 2 semanas, varios meses, años...)</p>"
+      );
+      conversationStage = "ready";
+      return;
     }
 
-    // --- CEREBRO: Analizar texto ---
-    function analyzeText(text) {
-        const lowerText = text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // Quitar acentos
-        
-        // Buscar coincidencia en la base de conocimientos
-        let bestMatch = null;
-        let maxScore = 0;
-
-        knowledgeBase.forEach(item => {
-            let score = 0;
-            item.keywords.forEach(word => {
-                if (lowerText.includes(word)) score++;
-            });
-
-            if (score > maxScore) {
-                maxScore = score;
-                bestMatch = item;
-            }
-        });
-
-        if (maxScore > 0) {
-            return bestMatch;
-        }
-        return null;
+    if (!userProfile.duration && conversationStage === "ready") {
+      userProfile.duration = value;
+      const { html, resumen, planOptimo } = getRecommendations(userProfile);
+      lastRecommendationSummary = resumen;
+      lastOptimalPlan = planOptimo || "";
+      addAssistantMessage(html);
+      return;
     }
 
-    // --- EVENTOS ---
+    // Si ya tenemos todo y la persona vuelve a escribir,
+    // usamos lo que ponga como nuevo detalle y recapitulamos.
+    userProfile.rawText += " | " + value;
+    const { html, resumen, planOptimo } = getRecommendations(userProfile);
+    lastRecommendationSummary = resumen;
+    lastOptimalPlan = planOptimo || "";
+    addAssistantMessage(html);
+  });
 
-    toggleBtn.addEventListener('click', toggleChat);
-    closeBtn.addEventListener('click', toggleChat);
+  messagesEl.addEventListener("click", (e) => {
+    const btn = e.target.closest(".ai-chat-whatsapp-btn");
+    if (!btn) return;
 
-    chatForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const userText = chatInput.value.trim();
-        if (!userText) return;
+    const textoPlano =
+      "Hola, vengo de la página web de Wellness 21PM. " +
+      (userProfile.zone ? "Zona principal: " + userProfile.zone + ". " : "") +
+      (userProfile.goal ? "Objetivo: " + userProfile.goal + ". " : "") +
+      (userProfile.intensity ? "Intensidad (0-10): " + userProfile.intensity + ". " : "") +
+      (userProfile.duration ? "Tiempo con la molestia: " + userProfile.duration + ". " : "") +
+      "Mis síntomas/dolores descritos: " + (userProfile.rawText || "(no especificado)") + ". " +
+      "Servicios recomendados: " + (lastRecommendationSummary || "(por definir)") + ". " +
+      (lastOptimalPlan ? "Plan óptimo sugerido: " + lastOptimalPlan + ". " : "") +
+      "¿Me ayudas a agendar una sesión?";
 
-        // 1. Mostrar mensaje usuario
-        addMessage(`<p>${userText}</p>`, 'user');
-        chatInput.value = '';
-
-        // 2. Simular pensar (Escribiendo...)
-        showTyping();
-
-        // 3. Procesar respuesta (con delay para realismo)
-        setTimeout(() => {
-            removeTyping();
-            
-            const result = analyzeText(userText);
-            
-            if (result) {
-                const responseHTML = `
-                    <p>${result.response}</p>
-                    <p><strong>Te recomiendo:</strong> ${result.recommendation.name}</p>
-                    <p style="font-size:0.8rem; opacity:0.8;"><em>¿Por qué? ${result.recommendation.reason}</em></p>
-                    <a href="https://wa.me/5585662464?text=${encodeURIComponent(result.recommendation.link)}" target="_blank" class="chat-cta-btn">
-                        <i class="fa-brands fa-whatsapp"></i> Agendar este paquete
-                    </a>
-                `;
-                addMessage(responseHTML, 'ai');
-            } else {
-                const defaultHTML = `
-                    <p>${defaultResponse}</p>
-                    <a href="https://wa.me/5585662464?text=${encodeURIComponent(defaultRec.link)}" target="_blank" class="chat-cta-btn">
-                        <i class="fa-brands fa-whatsapp"></i> Consultar por WhatsApp
-                    </a>
-                `;
-                addMessage(defaultHTML, 'ai');
-            }
-
-        }, 1200); // 1.2 segundos de delay
-    });
-}
+    const texto = encodeURIComponent(textoPlano);
+    const url = "https://wa.me/" + WHATSAPP_PHONE + "?text=" + texto;
+    window.open(url, "_blank");
+  });
+});
