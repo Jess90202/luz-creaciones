@@ -531,5 +531,40 @@
   </footer>
 
   <script src="js/main.js"></script>
+
+  <!-- Asistente con IA (recomendador de servicios) -->
+  <div class="ai-chat-widget">
+    <button class="ai-chat-toggle">
+      <i class="fa-solid fa-comments"></i>
+      Asistente Wellness
+    </button>
+
+    <div class="ai-chat-window">
+      <div class="ai-chat-header">
+        <div>
+          <h3>Asistente Wellness 21PM</h3>
+          <p>Cuéntame qué sientes y te guío.</p>
+        </div>
+        <button class="ai-chat-close" type="button">&times;</button>
+      </div>
+
+      <div class="ai-chat-messages" id="aiChatMessages"></div>
+
+      <form class="ai-chat-input" id="aiChatForm">
+        <input
+          type="text"
+          id="aiChatText"
+          name="aiChatText"
+          autocomplete="off"
+          placeholder="Describe tu dolor o molestia (ej. dolor de espalda baja, estrés, piernas cansadas)..."
+          required
+        />
+        <button type="submit" aria-label="Enviar mensaje">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
 </body>
 </html>
