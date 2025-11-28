@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatInput    = document.getElementById("aiChatText");
 
   // Cambia este número a tu WhatsApp (formato internacional sin + ni espacios)
-  // Ejemplo: 52 (México) + 1 (si aplica) + número a 10 dígitos.
+  // Ejemplo: 52 (México) + número a 10 dígitos.
   const WHATSAPP_PHONE = "525585662464";
 
   if (!chatToggle || !chatWindow || !chatClose || !chatMessages || !chatForm || !chatInput) {
@@ -123,100 +123,253 @@ document.addEventListener("DOMContentLoaded", () => {
   // ---------- Detección de contexto / lógica de recomendación ----------
 
   function analyzeContext(rawText) {
-    const text = rawText.toLowerCase();
+    // Normalizar: minusculas + quitar acentos
+    const text = rawText
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
 
     // Caso general por defecto
     const context = {
       profile: "general",
-      packageName: "Sesión de masaje personalizado",
-      services: ["Evaluación inicial", "Masaje relajante / descontracturante"],
-      rationale: "Voy a personalizar la sesión según tu caso para ayudarte a reducir dolor y tensión."
+      packageName: "Sesion de masaje personalizado",
+      services: ["Evaluacion inicial", "Masaje relajante / descontracturante"],
+      rationale: "Voy a personalizar la sesion segun tu caso para ayudarte a reducir dolor y tension."
     };
 
-    // Caso 1: Espalda baja + trabajo sentado → Paquete Plus
-    const espaldaBaja = text.includes("espalda baja") || text.includes("zona lumbar") || text.includes("lumbalgia");
-    const sentado     = text.includes("sentado") || text.includes("oficina") || text.includes("silla") || text.includes("computadora") || text.includes("pc");
+    // -----------------------------
+    // PALABRAS CLAVE GENERALES
+    // -----------------------------
+    const hayEspalda      = text.includes("espalda");
+    const hayEspaldaBaja  = text.includes("espalda baja") || text.includes("zona lumbar") || text.includes("lumba");
+    const haySentado      = text.includes("sentad") || text.includes("oficina") || text.includes("escritorio") || text.includes("silla") || text.includes("computadora") || text.includes("pc");
 
-    if (espaldaBaja && sentado) {
+    const hayPiernas      = text.includes("pierna") || text.includes("pantorrilla") || text.includes("muslo");
+    const hayPesadas      = text.includes("pesad") || text.includes("cansad") || text.includes("agotad") || text.includes("fatiga");
+    const hayCirculacion  = text.includes("circulacion") ||
+                            text.includes("hinchad") ||
+                            text.includes("retencion de liquidos") ||
+                            text.includes("liquidos");
+
+    const hayMaraton      = text.includes("maraton") || text.includes("medio maraton") || text.includes("triatlon");
+    const hayCorrer       = text.includes("acabo de correr") || text.includes("corri ") || text.includes("corriendo") || text.includes("correr");
+
+    const hayCuello       = text.includes("cuello") || text.includes("cervical");
+    const hayHombros      = text.includes("hombro") || text.includes("hombros") || text.includes("trapecio");
+    const hayEstres       = text.includes("estres") || text.includes("ansiedad") || text.includes("nervios") ||
+                            text.includes("nervioso") || text.includes("nerviosa") ||
+                            text.includes("tenso") || text.includes("tension") ||
+                            text.includes("estresado") || text.includes("estresada");
+
+    const hayDolorFuerte  = text.includes("mucho dolor") ||
+                            text.includes("dolor muy fuerte") ||
+                            text.includes("no aguanto") ||
+                            text.includes("intenso") ||
+                            text.includes("intensidad 9") ||
+                            text.includes("intensidad 10");
+
+    // Embarazo
+    const hayEmbarazo     = text.includes("embarazo") || text.includes("embarazada") || text.includes("gestacion") ||
+                            text.includes("estoy embarazada") || text.includes("meses de embarazo");
+
+    const riesgoEmbarazo  = text.includes("alto riesgo") || text.includes("amenaza de aborto") ||
+                            text.includes("placenta previa") || text.includes("sangrado");
+
+    // Migrañas / cabeza
+    const hayCabeza       = text.includes("dolor de cabeza") || text.includes("cabeza") || text.includes("cefalea");
+    const hayMigraña      = text.includes("migra") || text.includes("jaqueca");
+
+    // Ansiedad / sueño
+    const haySuenoMalo    = text.includes("no puedo dormir") || text.includes("insomnio") ||
+                            text.includes("duermo mal") || text.includes("no descanso") || text.includes("desvelo");
+
+    // Ciática
+    const hayCiatica      = text.includes("ciatica") || text.includes("ciatico") || text.includes("nervio ciatico") ||
+                            (hayEspaldaBaja && hayPiernas && text.includes("baja por la pierna"));
+
+    // Bruxismo / mandíbula
+    const hayBruxismo     = text.includes("bruxismo") || text.includes("aprieto los dientes") ||
+                            text.includes("rechinar los dientes") || text.includes("mandibula") || text.includes("maxilar");
+
+    // Red flags médicos
+    const hayPecho        = text.includes("dolor en el pecho") || text.includes("pecho apretado") || text.includes("opresion en el pecho");
+    const hayBrazoIzq     = text.includes("brazo izquierdo dormido") || text.includes("dolor en el brazo izquierdo");
+    const hayFaltaAire    = text.includes("falta de aire") || text.includes("me cuesta respirar") || text.includes("dificultad para respirar");
+    const hayMareoFuerte  = text.includes("mareo muy fuerte") || text.includes("me voy a desmayar") || text.includes("desmayo");
+    const hayVision       = text.includes("vision borrosa") || text.includes("veo borroso") || text.includes("veo doble");
+
+    const hayRedFlag = hayPecho || hayBrazoIzq || hayFaltaAire || hayMareoFuerte || hayVision;
+
+    // -----------------------------------------
+    // PRIORIDAD 0: RED FLAGS -> sugerir medico
+    // -----------------------------------------
+    if (hayRedFlag) {
+      context.profile     = "red-flag-medica";
+      context.packageName = "Valoracion medica previa";
+      context.services    = [
+        "Sugerencia de valoracion medica antes de cualquier masaje"
+      ];
+      context.rationale   = "Por algunos sintomas que mencionas, lo mas prudente es que primero te valore un medico. El masaje puede ser un complemento despues, pero la prioridad es descartar algo mas serio.";
+      return context;
+    }
+
+    // -----------------------------------------
+    // PRIORIDAD 1: EMBARAZO
+    // -----------------------------------------
+    if (hayEmbarazo) {
+      if (riesgoEmbarazo) {
+        // Embarazo de alto riesgo
+        context.profile     = "embarazo-riesgo";
+        context.packageName = "Consulta medica previa";
+        context.services    = [
+          "Consulta con tu ginecologo/a tratante",
+          "Evaluar si es posible recibir masaje y en que condiciones"
+        ];
+        context.rationale   = "Al mencionar embarazo de alto riesgo o antecedentes delicados, es indispensable que tu medico tratante autorice y detalle si puedes recibir masaje, y en que zonas.";
+        return context;
+      }
+
+      // Embarazo sin palabras de alto riesgo
+      context.profile     = "embarazo";
+      context.packageName = "Masaje prenatal seguro y adaptado";
+      context.services    = [
+        "Posicion lateral comoda",
+        "Masaje suave en espalda y caderas (segun trimestre)",
+        "Masaje en piernas para aliviar pesadez"
+      ];
+      context.rationale   = "Durante el embarazo, un masaje especifico y adaptado puede ayudar a aliviar la carga en espalda, caderas y piernas, siempre respetando las recomendaciones de tu medico.";
+      return context;
+    }
+
+    // -----------------------------------------
+    // PRIORIDAD 2: MIGRAÑAS / CABEZA
+    // -----------------------------------------
+    if (hayMigraña || (hayCabeza && hayEstres)) {
+      context.profile     = "migraña-cabeza";
+      context.packageName = "Masaje craneofacial + cuello y hombros";
+      context.services    = [
+        "Masaje suave en cuero cabelludo y rostro",
+        "Trabajo delicado en cuello y trapecios",
+        "Tecnicas de relajacion enfocadas"
+      ];
+      context.rationale   = "Cuando el dolor se concentra en cabeza y cuello, un masaje craneofacial con trabajo en trapecios ayuda a disminuir la tension y favorecer descanso.";
+      return context;
+    }
+
+    // -----------------------------------------
+    // PRIORIDAD 3: ANSIEDAD / NO DORMIR BIEN
+    // -----------------------------------------
+    if (hayEstres && haySuenoMalo) {
+      context.profile     = "ansiedad-sueno";
+      context.packageName = "Masaje relajante profundo + ritual de descanso";
+      context.services    = [
+        "Masaje relajante de cuerpo completo",
+        "Enfasis en espalda, cuello y pies",
+        "Ambiente con musica suave y respiracion guiada"
+      ];
+      context.rationale   = "Si sientes ansiedad y te cuesta dormir, un masaje relajante profundo acompañado de tecnicas de respiracion y ambiente tranquilo puede ayudar a que tu cuerpo active la respuesta de descanso.";
+      return context;
+    }
+
+    // -----------------------------------------
+    // PRIORIDAD 4: CIATICA / DOLOR QUE BAJA POR LA PIERNA
+    // -----------------------------------------
+    if (hayCiatica) {
+      context.profile     = "ciatica";
+      context.packageName = "Sesion enfocada en zona lumbar, gluteo y pierna";
+      context.services    = [
+        "Trabajo especifico en zona lumbar y gluteo",
+        "Masaje en trayecto de la pierna afectada (sin invadir dolor agudo)",
+        "Recomendaciones de posturas y estiramientos suaves"
+      ];
+      context.rationale   = "Cuando el dolor recorre desde la zona lumbar hacia la pierna, se suele trabajar con mucho cuidado la zona del nervio ciatico, gluteos y musculatura asociada, respetando siempre tu umbral de dolor.";
+      return context;
+    }
+
+    // -----------------------------------------
+    // PRIORIDAD 5: BRUXISMO / MANDIBULA
+    // -----------------------------------------
+    if (hayBruxismo) {
+      context.profile     = "bruxismo-mandibula";
+      context.packageName = "Masaje mandibular y cervical suave";
+      context.services    = [
+        "Masaje externo en zona de mandibula y maseteros",
+        "Trabajo suave en cuello y base del craneo",
+        "Recomendaciones posturales y de higiene del sueno"
+      ];
+      context.rationale   = "Cuando hay bruxismo o mucha tension en la mandibula, se puede trabajar suavemente la musculatura externa y descargar cervicales para disminuir la sensacion de rigidez.";
+      return context;
+    }
+
+    // -----------------------------------------
+    // CONTEXTOS ORIGINALES
+    // -----------------------------------------
+
+    // Espalda baja + trabajo sentado -> Paquete Plus
+    if ((hayEspaldaBaja || (hayEspalda && text.includes("baja"))) && haySentado) {
       context.profile     = "sedentario-oficina";
       context.packageName = "Paquete Plus";
       context.services    = [
         "Masaje descontracturante en espalda",
         "Pistola de impacto en puntos clave",
-        "Presoterapia para mejorar circulación"
+        "Presoterapia para mejorar circulacion"
       ];
-      context.rationale   = "Por el dolor en la espalda baja asociado a estar mucho tiempo sentado, este paquete combina masaje profundo, pistola de impacto y presoterapia para liberar tensión y mejorar la circulación.";
+      context.rationale   = "Por el dolor en la espalda baja asociado a estar mucho tiempo sentado, este paquete combina masaje profundo, pistola de impacto y presoterapia para liberar tension y mejorar la circulacion.";
       return context;
     }
 
-    // Caso 2: Deportista / maratón / piernas pesadas → Masaje Deportivo + Presoterapia
-    const maraton  = text.includes("maratón") || text.includes("maraton");
-    const correr   = text.includes("corr") || text.includes("running") || text.includes("trote");
-    const piernas  = text.includes("piernas") || text.includes("pantorrillas") || text.includes("pantorrilla") || text.includes("muslos") || text.includes("muslo");
-    const pesadas  = text.includes("pesadas") || text.includes("cansadas") || text.includes("fatiga");
-
-    if ((maraton || correr) && piernas && pesadas) {
+    // Deportista / maraton + piernas pesadas -> Masaje Deportivo + Presoterapia
+    if ((hayMaraton || hayCorrer) && hayPiernas && hayPesadas) {
       context.profile     = "deportista";
       context.packageName = "Masaje Deportivo + Presoterapia";
       context.services    = [
         "Masaje deportivo en piernas",
         "Descarga muscular focalizada",
-        "Presoterapia para recuperación y drenaje"
+        "Presoterapia para recuperacion y drenaje"
       ];
-      context.rationale   = "Después de un maratón o entrenamientos intensos, este combo ayuda a descargar la musculatura, reducir la pesadez y acelerar la recuperación de tus piernas.";
+      context.rationale   = "Despues de un maraton o entrenamientos intensos, este combo ayuda a descargar la musculatura, reducir la pesadez y acelerar la recuperacion de tus piernas.";
       return context;
     }
 
-    // Caso 3: Dolor en cuello/hombros asociado a estrés
-    const cuello   = text.includes("cuello") || text.includes("cervical");
-    const hombros  = text.includes("hombro") || text.includes("hombros") || text.includes("trapecio");
-    const estres   = text.includes("estrés") || text.includes("estres") || text.includes("ansiedad") || text.includes("tenso") || text.includes("tensión") || text.includes("tension");
-
-    if ((cuello || hombros) && estres) {
-      context.profile     = "estrés-cuello-hombros";
-      context.packageName = "Masaje Antiestrés + Espalda y Cervical";
+    // Cuello / hombros + estres -> Masaje Antiestres
+    if ((hayCuello || hayHombros) && hayEstres) {
+      context.profile     = "estres-cuello-hombros";
+      context.packageName = "Masaje Antiestres + Espalda y Cervical";
       context.services    = [
-        "Masaje antiestrés",
-        "Trabajo específico en cuello y hombros",
-        "Técnicas de relajación profunda"
+        "Masaje antiestres",
+        "Trabajo especifico en cuello y hombros",
+        "Tecnicas de relajacion profunda"
       ];
-      context.rationale   = "El estrés acumulado suele fijarse en cuello y hombros. Este tratamiento ayuda a soltar la tensión y a que tu cuerpo y mente descansen mejor.";
+      context.rationale   = "El estres acumulado suele fijarse en cuello y hombros. Este tratamiento ayuda a soltar la tension y a que tu cuerpo y mente descansen mejor.";
       return context;
     }
 
-    // Caso 4: Pesadez de piernas / circulación sin deporte claro
-    const circulacion = text.includes("circulación") || text.includes("circulacion") ||
-                        text.includes("hinchadas") || text.includes("hinchazón") || text.includes("hinchazon") ||
-                        text.includes("retención de líquidos") || text.includes("retencion de liquidos");
-
-    if (piernas && (pesadas || circulacion)) {
+    // Piernas pesadas / circulacion -> Presoterapia + masaje piernas
+    if (hayPiernas && (hayPesadas || hayCirculacion)) {
       context.profile     = "piernas-circulacion";
-      context.packageName = "Sesión de Presoterapia + Masaje en Piernas";
+      context.packageName = "Sesion de Presoterapia + Masaje en Piernas";
       context.services    = [
         "Presoterapia enfocada en piernas",
         "Masaje circulatorio / drenante"
       ];
-      context.rationale   = "La presoterapia y el masaje circulatorio ayudan a aliviar la pesadez, mejorar la circulación y disminuir la retención de líquidos en las piernas.";
+      context.rationale   = "La presoterapia y el masaje circulatorio ayudan a aliviar la pesadez, mejorar la circulacion y disminuir la retencion de liquidos en las piernas.";
       return context;
     }
 
-    // Caso 5: dolor muy fuerte en zona espalda/cuello/hombros → valoración + masaje terapéutico
-    const dolorFuerte = text.includes("mucho dolor") || text.includes("dolor muy fuerte") ||
-                        text.includes("no aguanto") || text.includes("intenso");
-
-    if (dolorFuerte && (espaldaBaja || cuello || hombros)) {
+    // Dolor muy fuerte en espalda / cuello / hombros -> Valoracion + masaje terapeutico
+    if (hayDolorFuerte && (hayEspalda || hayCuello || hayHombros)) {
       context.profile     = "dolor-intenso";
-      context.packageName = "Sesión de Valoración + Masaje Terapéutico";
+      context.packageName = "Sesion de Valoracion + Masaje Terapeutico";
       context.services    = [
-        "Evaluación inicial",
-        "Masaje terapéutico enfocado",
+        "Evaluacion inicial",
+        "Masaje terapeutico enfocado",
         "Recomendaciones de cuidado en casa"
       ];
-      context.rationale   = "Por la intensidad del dolor, es importante valorar bien el origen y trabajar de forma puntual con masaje terapéutico.";
+      context.rationale   = "Por la intensidad del dolor, es importante valorar bien el origen y trabajar de forma puntual con masaje terapeutico.";
       return context;
     }
 
-    // Default (ya definido arriba)
+    // Si nada coincide, se queda el contexto general
     return context;
   }
 
@@ -224,14 +377,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function buildWhatsAppMessage(userText, context) {
     const base = [
-      "Hola, mi asistente virtual Óscar en la página Wellness 21PM me recomendó el " + context.packageName + ".",
+      "Hola, mi asistente virtual Oscar en la pagina Wellness 21PM me recomendo el " + context.packageName + ".",
       "",
-      "Esto fue lo que le conté:",
+      "Esto fue lo que le conte:",
       `"` + userText.trim() + `"`,
       "",
       "Servicios sugeridos: " + context.services.join(", ") + ".",
       "",
-      "¿Me ayudas a agendar una sesión con esa recomendación?"
+      "¿Me ayudas a agendar una sesion con esa recomendacion?"
     ].join("\n");
 
     return base;
@@ -251,7 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const html = `
       <p><strong>Hola, soy Óscar, tu asistente virtual.</strong></p>
-      <p>Por lo que me cuentas, lo más adecuado para ti es: <strong>${context.packageName}</strong>.</p>
+      <p>Por lo que me cuentas, lo mas adecuado para ti es: <strong>${context.packageName}</strong>.</p>
       <p>${context.rationale}</p>
       <p><strong>Incluye:</strong> ${context.services.join(" · ")}.</p>
       <p>Si quieres, puedo ayudarte a agendar ahora mismo:</p>
