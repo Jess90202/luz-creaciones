@@ -247,9 +247,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!btn) return;
 
     const texto = encodeURIComponent(
-      "Hola, vengo de la página web de Wellness 21PM.%0A%0A" +
-      "Mis síntomas/dolores: " + (lastUserInput || "(no especificado)") + ".%0A%0A" +
-      "El asistente me recomendó: " + (lastRecommendationSummary || "(por definir)") + ".%0A%0A" +
+      "Hola, vengo de la página web de Wellness 21PM.\n\n" +
+      "Mis síntomas/dolores: " + (lastUserInput || "(no especificado)") + ".\n\n" +
+      "El asistente me recomendó: " + (lastRecommendationSummary || "(por definir)") + ".\n\n" +
       "¿Me ayudas a agendar una sesión?"
     );
 
