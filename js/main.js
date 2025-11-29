@@ -348,8 +348,8 @@ document.addEventListener("DOMContentLoaded", () => {
       addMessage(
         "assistant",
         "<p>Hola, soy <strong>Óscar</strong>, tu asistente virtual de Wellness 21PM.</p>" +
-          "<p>Te voy a ayudar a elegir el mejor <strong>tipo de masaje</strong>, las <strong>tecnologías</strong> (presoterapia, pistola de impacto, acupuntura…) y el <strong>paquete</strong> adecuado para ti.</p>" +
-          "<p>Para comenzar, ¿<strong>cómo te llamas</strong>?</p>"
+          "<p>Te voy a hacer <strong>3 preguntas rápidas</strong> para recomendarte el mejor <strong>tipo de masaje</strong>, las <strong>tecnologías</strong> (presoterapia, pistola, acupuntura…) y el <strong>paquete</strong> ideal para ti.</p>" +
+          "<p>Para empezar, ¿<strong>cómo te llamas</strong>?</p>"
       );
     }
   }
@@ -371,38 +371,50 @@ document.addEventListener("DOMContentLoaded", () => {
   backdropEl.addEventListener("click", closeChat);
 
   // ----- Manejo del formulario -----
-  formEl.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const value = inputEl.value.trim();
-    if (!value) return;
+  function processUserMessage(value) {
+    const trimmed = (value || "").trim();
+    if (!trimmed) return;
 
-    addMessage("user", value);
-    inputEl.value = "";
+    addMessage("user", trimmed);
 
     if (step === "askName") {
-      const firstName = value.split(/\s+/)[0];
+      const firstName = trimmed.split(/\s+/)[0];
       userName = firstName;
       step = "askSymptoms";
       addMessage(
         "assistant",
         `<p>Mucho gusto, <strong>${firstName}</strong>.</p>` +
-          `<p>Ahora cuéntame con tus palabras <strong>qué sientes</strong>: por ejemplo, ` +
-          `"me duele la cabeza y tengo mala circulación", ` +
-          `"me duele la espalda baja por estar sentado", ` +
-          `"acabo de correr y siento las piernas muy pesadas"…</p>`
+          `<p>Te haré <strong>3 preguntas rápidas</strong> para conocerte mejor.</p>` +
+          `<p>Primero, cuéntame con tus palabras <strong>qué sientes</strong> o qué te preocupa: por ejemplo, dolor en cuello, espalda baja, piernas cansadas, mucho estrés, no descansar bien…</p>` +
+          `<p>Si quieres, también puedes usar los botones de abajo para contestar más rápido.</p>`
       );
       return;
     }
 
-    // Interpretación de síntomas y recomendación
+    // A partir de aquí, interpretamos los síntomas y construimos la recomendación
     showTyping();
     setTimeout(() => {
       hideTyping();
-      const html = buildRecommendation(value);
+      const html = buildRecommendation(trimmed);
       addMessage("assistant", html);
       step = "ready";
     }, 700);
+  }
+
+  formEl.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const value = inputEl.value;
+    inputEl.value = "";
+    processUserMessage(value);
   });
+
+  const quickButtons = chatRoot.querySelectorAll("[data-w21-quick]");
+  quickButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const value = btn.getAttribute("data-w21-quick") || "";
+      processUserMessage(value);
+    });
+  }););
 
   // ----- Click en botón de WhatsApp -----
   messagesEl.addEventListener("click", (e) => {
