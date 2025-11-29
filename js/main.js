@@ -36,13 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // ============ CHAT IA WELLNESS 21PM 3.0 ============
-);
 
 
-// ==============================
-// Asistente Wellness 21PM · IA v6
-// Recomendador de combos de servicios + paquete
-// ==============================
 document.addEventListener("DOMContentLoaded", () => {
   const chatRoot   = document.querySelector(".w21-chat");
   if (!chatRoot) return;
@@ -370,7 +365,8 @@ document.addEventListener("DOMContentLoaded", () => {
   closeBtn.addEventListener("click", closeChat);
   backdropEl.addEventListener("click", closeChat);
 
-  // ----- function processUserMessage(value) {
+  // ----- Manejo del formulario -----
+  function processUserMessage(value) {
     const trimmed = (value || "").trim();
     if (!trimmed) return;
 
