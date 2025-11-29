@@ -409,7 +409,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const value = btn.getAttribute("data-w21-quick") || "";
       processUserMessage(value);
     });
-  }););
+  });
 
   // ----- Click en botón de WhatsApp -----
   messagesEl.addEventListener("click", (e) => {
