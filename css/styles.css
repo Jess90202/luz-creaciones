@@ -1984,3 +1984,10 @@ main li {
     justify-content: flex-start;
   }
 }
+
+/* Ajuste: en móvil, subir el chat para que no se monte sobre la barra WhatsApp */
+@media (max-width: 768px) {
+  .w21-chat {
+    bottom: 4.2rem;
+  }
+}
