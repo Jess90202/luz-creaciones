@@ -1714,88 +1714,69 @@ main li {
 
 
 /* ============================
-   QUICK REPLIES ASISTENTE
+   CARD GENÉRICO DE SECCIÓN
    ============================ */
 
-.w21-quick-replies {
-  padding: 0.6rem 0.75rem 0.4rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  border-top: 1px solid rgba(0, 0, 0, 0.04);
+.section-card {
+  background:
+    radial-gradient(circle at top left, rgba(244, 223, 209, 0.7), transparent 60%),
+    radial-gradient(circle at bottom right, rgba(233, 221, 255, 0.6), transparent 55%),
+    var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  padding: 2rem 1.6rem 2.1rem;
+  box-shadow: var(--shadow-soft);
 }
-
-.w21-quick-reply {
-  border: none;
-  border-radius: 999px;
-  padding: 0.3rem 0.8rem;
-  font-size: 0.75rem;
-  background: rgba(247, 223, 202, 0.8);
-  color: #5b4630;
-  cursor: pointer;
-  white-space: nowrap;
-  max-width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.w21-quick-reply:hover {
-  background: rgba(228, 198, 138, 0.95);
-}
-
 
 /* ============================
    TESTIMONIOS
    ============================ */
 
 .testimonials-section {
-  padding: 4rem 1.5rem;
+  padding: 4.6rem 0 4.2rem;
 }
 
-.testimonials-section .section-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.testimonials-section .section-title {
-  font-size: 2rem;
-  text-align: center;
-  margin-bottom: 0.5rem;
-}
-
-.testimonials-section .section-subtitle {
-  text-align: center;
-  max-width: 680px;
-  margin: 0 auto 2.5rem;
-  font-size: 0.95rem;
-  line-height: 1.6;
-  opacity: 0.9;
+.testimonials-card .section-head {
+  margin-bottom: 2rem;
 }
 
 .testimonials-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.6rem;
 }
 
 .testimonial-card {
-  background: #ffffff;
-  border-radius: 18px;
-  padding: 1.5rem 1.4rem;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(201, 168, 106, 0.25);
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-md);
+  padding: 1.4rem 1.3rem 1.2rem;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  position: relative;
+}
+
+.testimonial-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(251, 146, 60, 0.16);
+  color: #ea580c;
+  margin-bottom: 0.75rem;
 }
 
 .testimonial-quote {
-  font-size: 0.96rem;
-  line-height: 1.7;
-  margin-bottom: 1.3rem;
+  margin-bottom: 1.1rem;
 }
 
 .testimonial-meta {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.18rem;
   font-size: 0.85rem;
   opacity: 0.9;
 }
@@ -1814,20 +1795,32 @@ main li {
 
 .section-cta-after-packages {
   margin-top: 3rem;
-  padding: 2rem 1.5rem;
-  border-radius: 20px;
-  background: linear-gradient(135deg, rgba(247, 223, 202, 0.95), rgba(228, 198, 138, 0.85));
+}
+
+.section-cta-card {
   text-align: center;
+}
+
+.section-cta-icon {
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(234, 179, 8, 0.16);
+  color: #b45309;
+  margin-bottom: 0.4rem;
 }
 
 .section-cta-title {
   font-size: 1.4rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.35rem;
 }
 
 .section-cta-text {
   max-width: 580px;
-  margin: 0 auto 1.3rem;
+  margin: 0 auto 1.25rem;
   font-size: 0.95rem;
   line-height: 1.6;
 }
@@ -1837,13 +1830,13 @@ main li {
   align-items: center;
   justify-content: center;
   padding: 0.75rem 1.8rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   font-size: 0.95rem;
   font-weight: 600;
   text-decoration: none;
   border: none;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
 }
 
 .btn-cta-secondary {
@@ -1854,7 +1847,7 @@ main li {
 
 .btn-cta-secondary:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.14);
 }
 
 /* ============================
@@ -1869,12 +1862,12 @@ main li {
   padding: 0.6rem 1rem;
   background: rgba(253, 229, 210, 0.98);
   box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.12);
-  z-index: 999;
+  z-index: 900;
   display: none;
 }
 
 .mobile-cta-content {
-  max-width: 1100px;
+  max-width: 1120px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -1890,7 +1883,7 @@ main li {
 .mobile-cta-button {
   flex-shrink: 0;
   padding: 0.5rem 1.4rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 600;
@@ -1915,19 +1908,30 @@ main li {
    ZONA CDMX
    ============================ */
 
-#zona-cdmx {
-  padding: 4rem 1.5rem;
+#zona-cdmx .zona-card {
+  align-items: flex-start;
 }
 
-#zona-cdmx .shell {
-  max-width: 1100px;
-  margin: 0 auto;
+.zona-card-details {
+  align-self: stretch;
+}
+
+.zona-icon {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(59, 130, 246, 0.15);
+  color: #1d4ed8;
+  margin-bottom: 0.9rem;
 }
 
 .zona-list {
   list-style: none;
   padding-left: 0;
-  margin: 1rem 0 0;
+  margin: 0;
 }
 
 .zona-list li {
@@ -1959,7 +1963,7 @@ main li {
 }
 
 .w21-chat-quick-replies button {
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid #fed7aa;
   background: #fff7ed;
   color: #92400e;
