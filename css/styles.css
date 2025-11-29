@@ -1574,3 +1574,11 @@ main li {
     width: auto;
   }
 }
+
+/* Override hero badge color to peach */
+.hero-badge{
+ background:#d08c65!important;
+ border-color:rgba(255,255,255,0.35)!important;
+ color:#fff6ed!important;
+}
+.hero-badge i{color:#fff6ed!important;}
