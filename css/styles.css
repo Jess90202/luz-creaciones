@@ -1711,3 +1711,272 @@ main li {
   padding-top: 0.6rem;
   margin-top: 0.4rem;
 }
+
+
+/* ============================
+   QUICK REPLIES ASISTENTE
+   ============================ */
+
+.w21-quick-replies {
+  padding: 0.6rem 0.75rem 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.w21-quick-reply {
+  border: none;
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.75rem;
+  background: rgba(247, 223, 202, 0.8);
+  color: #5b4630;
+  cursor: pointer;
+  white-space: nowrap;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.w21-quick-reply:hover {
+  background: rgba(228, 198, 138, 0.95);
+}
+
+
+/* ============================
+   TESTIMONIOS
+   ============================ */
+
+.testimonials-section {
+  padding: 4rem 1.5rem;
+}
+
+.testimonials-section .section-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.testimonials-section .section-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.testimonials-section .section-subtitle {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 2.5rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.8rem;
+}
+
+.testimonial-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 1.5rem 1.4rem;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(201, 168, 106, 0.25);
+}
+
+.testimonial-quote {
+  font-size: 0.96rem;
+  line-height: 1.7;
+  margin-bottom: 1.3rem;
+}
+
+.testimonial-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.85rem;
+  opacity: 0.9;
+}
+
+.testimonial-name {
+  font-weight: 600;
+}
+
+.testimonial-tag {
+  font-style: italic;
+}
+
+/* ============================
+   CTA después de paquetes
+   ============================ */
+
+.section-cta-after-packages {
+  margin-top: 3rem;
+  padding: 2rem 1.5rem;
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(247, 223, 202, 0.95), rgba(228, 198, 138, 0.85));
+  text-align: center;
+}
+
+.section-cta-title {
+  font-size: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-cta-text {
+  max-width: 580px;
+  margin: 0 auto 1.3rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.8rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn-cta-secondary {
+  background: #ffffff;
+  color: #8b6a2f;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.btn-cta-secondary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* ============================
+   BARRA FIJA WHATSAPP MÓVIL
+   ============================ */
+
+.mobile-cta-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.6rem 1rem;
+  background: rgba(253, 229, 210, 0.98);
+  box-shadow: 0 -8px 20px rgba(0, 0, 0, 0.12);
+  z-index: 999;
+  display: none;
+}
+
+.mobile-cta-content {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.mobile-cta-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.mobile-cta-button {
+  flex-shrink: 0;
+  padding: 0.5rem 1.4rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  background: #25d366;
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.mobile-cta-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(37, 211, 102, 0.5);
+}
+
+@media (max-width: 768px) {
+  .mobile-cta-bar {
+    display: block;
+  }
+}
+
+/* ============================
+   ZONA CDMX
+   ============================ */
+
+#zona-cdmx {
+  padding: 4rem 1.5rem;
+}
+
+#zona-cdmx .shell {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.zona-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 1rem 0 0;
+}
+
+.zona-list li {
+  position: relative;
+  padding-left: 1.4rem;
+  margin-bottom: 0.7rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.zona-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0.1rem;
+  color: #c9a86a;
+  font-size: 1.2rem;
+}
+
+/* ============================
+   QUICK REPLIES CHAT
+   ============================ */
+
+.w21-chat-quick-replies {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.75rem 0 0.5rem;
+}
+
+.w21-chat-quick-replies button {
+  border-radius: 999px;
+  border: 1px solid #fed7aa;
+  background: #fff7ed;
+  color: #92400e;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.w21-chat-quick-replies button:hover {
+  background: #ffedd5;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(251, 146, 60, 0.28);
+}
+
+@media (max-width: 480px) {
+  .w21-chat-quick-replies {
+    justify-content: flex-start;
+  }
+}
