@@ -370,8 +370,7 @@ document.addEventListener("DOMContentLoaded", () => {
   closeBtn.addEventListener("click", closeChat);
   backdropEl.addEventListener("click", closeChat);
 
-  // ----- Manejo del formulario -----
-  function processUserMessage(value) {
+  // ----- function processUserMessage(value) {
     const trimmed = (value || "").trim();
     if (!trimmed) return;
 
@@ -391,7 +390,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // A partir de aquí, interpretamos los síntomas y construimos la recomendación
+    // Interpretación de síntomas y recomendación
     showTyping();
     setTimeout(() => {
       hideTyping();
