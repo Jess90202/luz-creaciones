@@ -1307,6 +1307,17 @@ main li {
 
 
 
+/* Override hero badge color to peach/cream */
+.hero-badge {
+  background: #d08c65 !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  color: #fff6ed !important;
+}
+.hero-badge i {
+  color: #fff6ed !important;
+}
+
+
 /* ==========================
    Asistente Wellness 21PM · IA v6
    Diseño en tonos crema/cálidos
@@ -1320,7 +1331,6 @@ main li {
   font-family: inherit;
 }
 
-/* Botón flotante */
 .w21-chat-toggle {
   width: 3.2rem;
   height: 3.2rem;
@@ -1351,7 +1361,7 @@ main li {
   font-size: 1.5rem;
 }
 
-/* Backdrop para cerrar fácilmente */
+/* Backdrop */
 .w21-chat-backdrop {
   position: fixed;
   inset: 0;
@@ -1361,14 +1371,14 @@ main li {
   transition: opacity 0.18s ease;
 }
 
-/* Ventana del chat */
+/* Chat window */
 .w21-chat-window {
   position: fixed;
   right: 1.4rem;
   bottom: 4.4rem;
   width: min(380px, 92vw);
   max-height: 78vh;
-  background: #fff7ed; /* crema muy claro */
+  background: #fff7ed;
   color: #4b5563;
   border-radius: 1.2rem;
   box-shadow: 0 20px 55px rgba(148, 27, 0, 0.4);
@@ -1381,7 +1391,6 @@ main li {
   transition: opacity 0.18s ease, transform 0.18s ease;
 }
 
-/* Estado abierto */
 .w21-chat.open .w21-chat-window,
 .w21-chat.open .w21-chat-backdrop {
   pointer-events: auto;
@@ -1429,7 +1438,7 @@ main li {
   cursor: pointer;
 }
 
-/* Área de mensajes */
+/* Messages */
 .w21-chat-messages {
   padding: 0.8rem 0.8rem 0.4rem;
   flex: 1;
@@ -1472,7 +1481,6 @@ main li {
   border-bottom-left-radius: 0.25rem;
 }
 
-/* Listas dentro del mensaje del asistente */
 .w21-chat-bubble ul {
   margin: 0.35rem 0;
   padding-left: 1.1rem;
@@ -1482,7 +1490,7 @@ main li {
   margin-bottom: 0.15rem;
 }
 
-/* Formulario */
+/* Form */
 .w21-chat-form {
   padding: 0.55rem;
   border-top: 1px solid #fed7aa;
@@ -1515,7 +1523,7 @@ main li {
   cursor: pointer;
 }
 
-/* Botón de WhatsApp dentro del chat */
+/* WhatsApp button */
 .w21-chat-wa-btn {
   display: inline-flex;
   align-items: center;
@@ -1536,7 +1544,7 @@ main li {
   font-size: 1rem;
 }
 
-/* Dots "escribiendo..." */
+/* Typing dots */
 .w21-chat-typing {
   display: inline-flex;
   gap: 0.18rem;
@@ -1562,7 +1570,7 @@ main li {
   40% { transform: translateY(-3px); opacity: 1; }
 }
 
-/* Responsive: en pantallas pequeñas, subimos el chat y acercamos a la orilla */
+/* Responsive */
 @media (max-width: 480px) {
   .w21-chat {
     right: 1rem;
