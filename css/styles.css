@@ -1305,3 +1305,272 @@ main li {
   }
 }
 
+
+
+/* ==========================
+   Asistente Wellness 21PM · IA v6
+   Diseño en tonos crema/cálidos
+   ========================== */
+
+.w21-chat {
+  position: fixed;
+  right: 1.4rem;
+  bottom: 1.4rem;
+  z-index: 9999;
+  font-family: inherit;
+}
+
+/* Botón flotante */
+.w21-chat-toggle {
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f9735b, #fbbf77);
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(148, 27, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+}
+
+.w21-chat-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(148, 27, 0, 0.5);
+  opacity: 0.96;
+}
+
+.w21-chat-toggle:active {
+  transform: translateY(0);
+  box-shadow: 0 7px 22px rgba(148, 27, 0, 0.4);
+}
+
+.w21-chat-toggle-icon {
+  font-size: 1.5rem;
+}
+
+/* Backdrop para cerrar fácilmente */
+.w21-chat-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+
+/* Ventana del chat */
+.w21-chat-window {
+  position: fixed;
+  right: 1.4rem;
+  bottom: 4.4rem;
+  width: min(380px, 92vw);
+  max-height: 78vh;
+  background: #fff7ed; /* crema muy claro */
+  color: #4b5563;
+  border-radius: 1.2rem;
+  box-shadow: 0 20px 55px rgba(148, 27, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+/* Estado abierto */
+.w21-chat.open .w21-chat-window,
+.w21-chat.open .w21-chat-backdrop {
+  pointer-events: auto;
+}
+
+.w21-chat.open .w21-chat-window {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.w21-chat.open .w21-chat-backdrop {
+  opacity: 1;
+}
+
+/* Header */
+.w21-chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(135deg, #fed7aa, #fecaca);
+  border-bottom: 1px solid rgba(248, 113, 113, 0.4);
+}
+
+.w21-chat-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.w21-chat-title strong {
+  font-size: 0.9rem;
+  color: #7c2d12;
+}
+
+.w21-chat-title span {
+  font-size: 0.75rem;
+  color: #9a3412;
+}
+
+.w21-chat-close {
+  border: none;
+  background: transparent;
+  color: #7c2d12;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+/* Área de mensajes */
+.w21-chat-messages {
+  padding: 0.8rem 0.8rem 0.4rem;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.w21-chat-message {
+  display: flex;
+}
+
+.w21-chat-message.user {
+  justify-content: flex-end;
+}
+
+.w21-chat-message.assistant {
+  justify-content: flex-start;
+}
+
+.w21-chat-bubble {
+  max-width: 84%;
+  padding: 0.55rem 0.85rem;
+  border-radius: 0.9rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.w21-chat-message.user .w21-chat-bubble {
+  background: #fb923c;
+  color: #fff7ed;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.w21-chat-message.assistant .w21-chat-bubble {
+  background: #fff;
+  border: 1px solid #fed7aa;
+  color: #4b5563;
+  border-bottom-left-radius: 0.25rem;
+}
+
+/* Listas dentro del mensaje del asistente */
+.w21-chat-bubble ul {
+  margin: 0.35rem 0;
+  padding-left: 1.1rem;
+}
+
+.w21-chat-bubble li {
+  margin-bottom: 0.15rem;
+}
+
+/* Formulario */
+.w21-chat-form {
+  padding: 0.55rem;
+  border-top: 1px solid #fed7aa;
+  display: flex;
+  gap: 0.45rem;
+  background: #fff7ed;
+}
+
+.w21-chat-input {
+  flex: 1;
+  border-radius: 999px;
+  border: 1px solid #fed7aa;
+  background: #fff;
+  color: #4b5563;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+}
+
+.w21-chat-input::placeholder {
+  color: #9ca3af;
+}
+
+.w21-chat-send {
+  border-radius: 999px;
+  border: none;
+  padding: 0 0.95rem;
+  font-size: 0.9rem;
+  background: #fb923c;
+  color: #fff7ed;
+  cursor: pointer;
+}
+
+/* Botón de WhatsApp dentro del chat */
+.w21-chat-wa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: #22c55e;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(34, 197, 94, 0.35);
+}
+
+.w21-chat-wa-btn span:first-child {
+  font-size: 1rem;
+}
+
+/* Dots "escribiendo..." */
+.w21-chat-typing {
+  display: inline-flex;
+  gap: 0.18rem;
+}
+
+.w21-chat-typing span {
+  width: 0.28rem;
+  height: 0.28rem;
+  border-radius: 999px;
+  background: #fecaca;
+  animation: w21ChatBounce 0.9s infinite;
+}
+
+.w21-chat-typing span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.w21-chat-typing span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes w21ChatBounce {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-3px); opacity: 1; }
+}
+
+/* Responsive: en pantallas pequeñas, subimos el chat y acercamos a la orilla */
+@media (max-width: 480px) {
+  .w21-chat {
+    right: 1rem;
+    bottom: 1rem;
+  }
+  .w21-chat-window {
+    right: 0.7rem;
+    left: 0.7rem;
+    width: auto;
+  }
+}
