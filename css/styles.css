@@ -1582,3 +1582,17 @@ main li {
  color:#fff6ed!important;
 }
 .hero-badge i{color:#fff6ed!important;}
+
+
+/* FAQ headings with icons */
+.faq-item h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.faq-item h3 i {
+  color: #d08c65;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
