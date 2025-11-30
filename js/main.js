@@ -11,6 +11,20 @@ document.addEventListener("DOMContentLoaded", () => {
     navToggle.addEventListener("click", () => {
       nav.classList.toggle("show");
     });
+  const mobileCta = document.querySelector(".mobile-cta-text");
+  if (mobileCta) {
+    const now = new Date();
+    const hour = now.getHours();
+    if (hour >= 6 && hour < 12) {
+      mobileCta.textContent = "¿Agendamos tu sesión para hoy?";
+    } else if (hour >= 12 && hour < 19) {
+      mobileCta.textContent = "¿Agendamos tu sesión esta tarde?";
+    } else {
+      mobileCta.textContent = "¿Agendamos tu sesión para mañana?";
+    }
+  }
+
+
 
     nav.querySelectorAll("a").forEach(link => {
       link.addEventListener("click", () => {
@@ -33,6 +47,41 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
+
+  // Tracking simple (si existe gtag)
+  const safeTrack = (name, params = {}) => {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", name, params);
+    }
+  };
+
+  const heroWhatsAppBtn = document.querySelector('.hero-actions a.btn-primary[href="#contacto"]');
+  if (heroWhatsAppBtn) {
+    heroWhatsAppBtn.addEventListener("click", () => {
+      safeTrack("click_cta_hero_contacto", { location: "hero" });
+    });
+  }
+
+  const contactWhatsAppLink = document.querySelector('.contact-info a[href^="https://wa.me/5585662464"]');
+  if (contactWhatsAppLink) {
+    contactWhatsAppLink.addEventListener("click", () => {
+      safeTrack("click_whatsapp_contacto", { location: "contacto" });
+    });
+  }
+
+  const mobileBarBtn = document.querySelector(".mobile-cta-button");
+  if (mobileBarBtn) {
+    mobileBarBtn.addEventListener("click", () => {
+      safeTrack("click_whatsapp_mobile_bar", { location: "mobile_bar" });
+    });
+  }
+
+  const chatToggleBtn = document.querySelector(".w21-chat-toggle");
+  if (chatToggleBtn) {
+    chatToggleBtn.addEventListener("click", () => {
+      safeTrack("open_chat_widget", { location: "floating_button" });
+    });
+  }
 });
 
 // ============ CHAT IA WELLNESS 21PM 3.0 ============
@@ -314,7 +363,9 @@ document.addEventListener("DOMContentLoaded", () => {
       html += `<p>También podríamos valorar como alternativa: <strong>${altPackage.name}</strong>.</p>`;
     }
 
-    html += `<p>Si quieres, te ayudo a <strong>agendar una sesión por WhatsApp</strong> con estas recomendaciones.</p>`;
+    
+    html += `<p>Si quieres leer más detalles, puedes bajar a la sección de <a href="#precios"><strong>Paquetes</strong></a> o a <a href="#beneficios"><strong>Beneficios del masaje</strong></a>.</p>`;
+html += `<p>Si quieres, te ayudo a <strong>agendar una sesión por WhatsApp</strong> con estas recomendaciones.</p>`;
 
     const waLines = [
       userName ? `Nombre: ${userName}` : "Nombre: (no indicado)",
@@ -417,6 +468,9 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!btn) return;
     const url = btn.getAttribute("data-wa");
     if (url) {
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "click_whatsapp_chat", { location: "chat_assistant" });
+      }
       window.open(url, "_blank");
     }
   });
