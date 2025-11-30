@@ -2332,3 +2332,17 @@ main li {
     font-size: 1.4rem;
     margin: 0 auto 1rem auto;
 }
+
+/* === GOLD TITLES STRONGER === */
+.section h2, .section-head h2, h2 {
+  font-weight: 800 !important;
+  color: #d49a2a !important; /* dorado más fuerte */
+  letter-spacing: 0.3px;
+  font-size: 1.55rem !important;
+}
+
+@media(min-width:900px){
+  .section h2, .section-head h2, h2 {
+    font-size: 2.05rem !important;
+  }
+}
