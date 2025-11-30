@@ -2373,3 +2373,29 @@ h2 {
     font-size: 2.3rem !important;
   }
 }
+
+
+/* Accesibilidad visual: mejor lectura y foco visible */
+body {
+  line-height: 1.6;
+}
+
+.section {
+  scroll-margin-top: 6rem;
+}
+
+/* Estado de foco visible en botones y enlaces tipo botón */
+a.btn,
+.btn,
+.mobile-cta-button,
+.w21-chat-toggle {
+  outline: none;
+}
+
+a.btn:focus-visible,
+.btn:focus-visible,
+.mobile-cta-button:focus-visible,
+.w21-chat-toggle:focus-visible {
+  outline: 2px solid rgba(225, 184, 100, 0.95);
+  outline-offset: 2px;
+}
