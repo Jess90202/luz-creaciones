@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Año en el footer
   const yearEl = document.getElementById("year");
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
   }
 
+  // Menú móvil
   const navToggle = document.querySelector(".nav-toggle");
   const nav = document.querySelector(".site-nav");
 
@@ -12,30 +14,75 @@ document.addEventListener("DOMContentLoaded", () => {
       nav.classList.toggle("show");
     });
 
-    nav.querySelectorAll("a").forEach(link => {
+    nav.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", () => {
         nav.classList.remove("show");
       });
     });
   }
 
-  // Scroll suave
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener("click", function(e) {
-      const targetId = this.getAttribute("href").slice(1);
-      const target = document.getElementById(targetId);
-      if (target) {
-        e.preventDefault();
-        window.scrollTo({
-          top: target.offsetTop - 72,
-          behavior: "smooth"
-        });
-      }
+  // Scroll suave para enlaces internos
+  const internalLinks = document.querySelectorAll('a[href^="#"]:not([href="#"])');
+  internalLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const targetId = link.getAttribute("href");
+      if (!targetId || targetId === "#") return;
+      const target = document.querySelector(targetId);
+      if (!target) return;
+
+      e.preventDefault();
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   });
-});
 
-// ============ CHAT IA WELLNESS 21PM 3.0 ============
+  // Header sticky (versión web)
+  const header = document.querySelector(".site-header");
+  if (header) {
+    const onScroll = () => {
+      if (window.scrollY > 10) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll);
+  }
+
+  // Texto dinámico en barra fija de WhatsApp (mobile)
+  const mobileCtaText = document.querySelector(".mobile-cta-text");
+  if (mobileCtaText) {
+    const hour = new Date().getHours();
+    if (hour >= 6 && hour < 12) {
+      mobileCtaText.textContent = "¿Agendamos tu sesión para hoy?";
+    } else if (hour >= 12 && hour < 19) {
+      mobileCtaText.textContent = "¿Te agendo una sesión esta tarde?";
+    } else {
+      mobileCtaText.textContent = "¿Agendamos tu sesión para mañana?";
+    }
+  }
+
+  // Animaciones de aparición (scroll reveal)
+  const revealEls = document.querySelectorAll("[data-reveal]");
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    revealEls.forEach((el) => observer.observe(el));
+  } else {
+    // Degradado: mostrar todo si no hay soporte
+    revealEls.forEach((el) => el.classList.add("is-visible"));
+  }
+});
 
 
 document.addEventListener("DOMContentLoaded", () => {
