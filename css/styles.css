@@ -2002,9 +2002,9 @@ main li {
 }
 
 .site-header.scrolled {
-  background: rgba(61, 41, 32, 0.96);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  background: rgba(255, 238, 224, 0.92);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
 }
 
 /* ========== SCROLL REVEAL ========== */
