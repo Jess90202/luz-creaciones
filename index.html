@@ -20,6 +20,24 @@
 
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" type="image/png" href="img/logo-wellness21pm.png" />
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HealthAndBeautyBusiness",
+    "name": "Wellness 21PM",
+    "url": "https://jess90202.github.io/wellness21pm/",
+    "image": "https://jess90202.github.io/wellness21pm/img/logo-wellness21pm.png",
+    "description": "Masaje terapéutico y deportivo en CDMX. Combinación de masaje manual, tecnologías y enfoque integral para tu bienestar físico y emocional.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Ciudad de México",
+      "addressCountry": "MX"
+    },
+    "telephone": "+52 55 8566 2464",
+    "priceRange": "$$"
+  }
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -51,7 +69,7 @@
 
   <main>
     <!-- HERO -->
-    <section id="inicio" class="section hero">
+    <section id="inicio" class="section hero" data-reveal>
       <div class="shell hero-grid">
         <div class="hero-copy">
           <p class="eyebrow">Masaje profesional en CDMX</p>
@@ -103,7 +121,7 @@
     </section>
 
     <!-- QUIÉN SOY -->
-    <section id="quien-soy" class="section section-alt">
+    <section id="quien-soy" class="section section-alt" data-reveal>
       <div class="shell two-col">
         <div>
           <p class="eyebrow">Quién soy</p>
@@ -144,7 +162,7 @@
     </section>
 
     <!-- SERVICIOS -->
-    <section id="servicios" class="section">
+    <section id="servicios" class="section" data-reveal>
       <div class="shell">
         <div class="section-head">
           <p class="eyebrow">Servicios</p>
@@ -256,7 +274,7 @@
     </section>
 
     <!-- PRECIOS -->
-    <section id="precios" class="section section-alt">
+    <section id="precios" class="section section-alt" data-reveal>
       <div class="shell">
         <div class="section-head">
           <p class="eyebrow">Paquetes</p>
@@ -264,6 +282,47 @@
           <p class="section-intro">
             Todos los paquetes están pensados para que aproveches al máximo cada minuto de la sesión y tengas claro qué incluye.
           </p>
+        </div>
+
+        <div class="plan-rapido-card section-card" data-reveal>
+          <div class="plan-rapido-inner">
+            <h3 class="plan-rapido-title">Guía rápida para elegir paquete</h3>
+            <p class="plan-rapido-subtitle">
+              Si vienes con prisa, aquí tienes un mapa rápido para ubicarte. Después puedes abrir el asistente o escribirme por WhatsApp si sigues con dudas.
+            </p>
+            <div class="plan-rapido-grid">
+              <div class="plan-rapido-item">
+                <div class="plan-rapido-icon"><i class="fa-solid fa-user-injured"></i></div>
+                <h4>Dolor localizado</h4>
+                <p class="plan-rapido-text">
+                  Dolor en <strong>cuello, hombros o espalda baja</strong> por computadora, estrés o malas posturas.
+                </p>
+                <p class="plan-rapido-reco">
+                  Empezar con: <strong>Paquete Esencial</strong> o <strong>Masaje Manual de Cuerpo Completo</strong>.
+                </p>
+              </div>
+              <div class="plan-rapido-item">
+                <div class="plan-rapido-icon"><i class="fa-solid fa-brain"></i></div>
+                <h4>Estrés y descanso</h4>
+                <p class="plan-rapido-text">
+                  Mucho <strong>estrés, ansiedad</strong> o <strong>problemas para dormir bien</strong>.
+                </p>
+                <p class="plan-rapido-reco">
+                  Empezar con: <strong>Masaje Manual de Cuerpo Completo</strong> o <strong>Paquete Renacer</strong>.
+                </p>
+              </div>
+              <div class="plan-rapido-item">
+                <div class="plan-rapido-icon"><i class="fa-solid fa-person-running"></i></div>
+                <h4>Piernas cansadas / deporte</h4>
+                <p class="plan-rapido-text">
+                  <strong>Piernas pesadas</strong>, mala circulación o <strong>entrenamientos intensos</strong> (gym, running, maratón).
+                </p>
+                <p class="plan-rapido-reco">
+                  Empezar con: <strong>Paquete Plus</strong> o <strong>Paquete Renacer</strong> con enfoque deportivo.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="pricing-grid">
@@ -369,7 +428,7 @@
 </section>
 
     <!-- BENEFICIOS -->
-    <section id="beneficios" class="section">
+    <section id="beneficios" class="section" data-reveal>
       <div class="shell two-col">
         <div>
           <p class="eyebrow">Beneficios</p>
@@ -401,8 +460,37 @@
         </aside>
       </div>
     </section>
+    <!-- DIFERENCIA -->
+    <section id="diferencia" class="section" data-reveal>
+      <div class="shell two-col diferencia-grid">
+        <div>
+          <p class="eyebrow">Qué me diferencia</p>
+          <h2>Más que un masaje suelto, un acompañamiento real.</h2>
+          <p>
+            No solo “te doy un masaje y ya”. Buscamos entender qué haces en tu día a día,
+            qué hábitos te están pasando factura y qué necesitas para sentirte mejor en serio.
+          </p>
+          <ul class="check-list diferencia-list">
+            <li><i class="fa-solid fa-user-check"></i> <strong>Atención uno a uno:</strong> sin prisas ni cadenas de spa.</li>
+            <li><i class="fa-solid fa-arrows-spin"></i> <strong>Enfoque integral:</strong> masaje manual + tecnologías según tu caso.</li>
+            <li><i class="fa-solid fa-brain"></i> <strong>Trabajo físico y emocional:</strong> cuidamos tanto tu cuerpo como tu mente.</li>
+            <li><i class="fa-solid fa-route"></i> <strong>Plan de seguimiento:</strong> recomendaciones sencillas para aplicar fuera de la camilla.</li>
+          </ul>
+        </div>
+        <aside class="section-card diferencia-card">
+          <h3>Para quién es Wellness 21PM</h3>
+          <ul class="diferencia-target">
+            <li><i class="fa-solid fa-laptop"></i> Personas que pasan muchas horas sentadas o frente a la computadora.</li>
+            <li><i class="fa-solid fa-dumbbell"></i> Quienes entrenan fuerte (gym, running, maratón) y necesitan recuperar bien.</li>
+            <li><i class="fa-solid fa-heart-circle-bolt"></i> Personas con alto nivel de estrés que ya sienten que el cuerpo “no aguanta igual”.</li>
+            <li><i class="fa-solid fa-person-walking"></i> Personas mayores o con movilidad reducida que quieren sentirse más ligeras.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
     <!-- ZONA DE ATENCIÓN CDMX -->
-    <section id="zona-cdmx" class="section">
+    <section id="zona-cdmx" class="section" data-reveal>
       <div class="shell">
         <div class="section-card zona-card two-col">
           <div>
@@ -434,7 +522,7 @@
     </section>
 
     <!-- TESTIMONIOS -->
-    <section id="testimonios" class="section testimonials-section">
+    <section id="testimonios" class="section testimonials-section" data-reveal>
       <div class="shell">
         <div class="section-card testimonials-card">
           <div class="section-head">
@@ -494,10 +582,58 @@
         </div>
       </div>
     </section>
+    <!-- MINI BLOG -->
+    <section id="blog" class="section section-alt mini-blog" data-reveal>
+      <div class="shell">
+        <div class="section-head">
+          <p class="eyebrow">Aprende un poco más</p>
+          <h2>Notas rápidas para cuidar tu cuerpo día a día.</h2>
+          <p class="section-intro">
+            No necesitas memorizar teoría complicada. Estas ideas sencillas pueden ayudarte a entender mejor lo que sientes
+            y a tomar mejores decisiones sobre tu cuerpo.
+          </p>
+        </div>
+
+        <div class="blog-grid">
+          <article class="blog-card">
+            <h3><i class="fa-solid fa-computer"></i> Dolor de cuello por computadora</h3>
+            <p>
+              Pasar muchas horas sentado frente a la pantalla hace que la cabeza vaya “viajando” hacia adelante,
+              sobrecargando músculos del cuello y la parte alta de la espalda.
+            </p>
+            <p class="blog-tip">
+              <strong>Tip rápido:</strong> cada 45–60 minutos, levántate, camina un poco y lleva la barbilla suavemente hacia el pecho y luego hacia atrás.
+            </p>
+          </article>
+
+          <article class="blog-card">
+            <h3><i class="fa-solid fa-shoe-prints"></i> Piernas cansadas y circulación</h3>
+            <p>
+              Estar muchas horas de pie o sentado dificulta el retorno venoso, por eso las piernas se sienten pesadas o hinchadas al final del día.
+            </p>
+            <p class="blog-tip">
+              <strong>Tip rápido:</strong> eleva las piernas unos minutos al llegar a casa y combina masaje + movimiento suave para activar la circulación.
+            </p>
+          </article>
+
+          <article class="blog-card">
+            <h3><i class="fa-solid fa-bolt"></i> Estrés físico vs. emocional</h3>
+            <p>
+              A veces el cuerpo duele no solo por carga física, sino por todo lo que traemos en la cabeza.
+              El estrés sostenido hace que la musculatura esté en alerta constante.
+            </p>
+            <p class="blog-tip">
+              <strong>Tip rápido:</strong> combina masaje con respiraciones profundas y pequeños cambios en tu rutina de sueño.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
 
 
     <!-- FAQ -->
-    <section id="faq" class="section section-alt">
+    <section id="faq" class="section section-alt" data-reveal>
       <div class="shell">
         <div class="section-head">
           <p class="eyebrow">Preguntas frecuentes</p>
@@ -546,7 +682,7 @@
     </section>
 
     <!-- UBICACIÓN -->
-    <section id="ubicacion" class="section">
+    <section id="ubicacion" class="section" data-reveal>
       <div class="shell">
         <div>
           <p class="eyebrow">Ubicación</p>
@@ -560,7 +696,7 @@
     </section>
 
     <!-- CONTACTO -->
-    <section id="contacto" class="section section-alt">
+    <section id="contacto" class="section section-alt" data-reveal>
       <div class="shell contact-grid">
         <div>
           <p class="eyebrow">Contacto</p>
@@ -569,6 +705,24 @@
             Cuéntame qué te duele, qué actividad realizas y qué buscas conseguir con la sesión.
             Con esa información puedo proponerte el paquete y enfoque que más te convenga.
           </p>
+          <div class="antes-sesion-card section-card" data-reveal>
+            <div class="antes-sesion-inner">
+              <h3 class="antes-sesion-title">
+                <i class="fa-solid fa-clipboard-list"></i> Antes de tu sesión
+              </h3>
+              <p class="antes-sesion-text">
+                Para que aproveches mejor tu masaje y vengas con tranquilidad, ten en cuenta estas recomendaciones:
+              </p>
+              <ul class="antes-sesion-list">
+                <li><strong>Ropa cómoda:</strong> de preferencia fácil de poner y quitar. Si vienes de la oficina o del gym, puedes traer una muda ligera.</li>
+                <li><strong>Comida:</strong> evita llegar con el estómago completamente lleno; lo ideal es haber comido ligero 1–2 horas antes.</li>
+                <li><strong>Hidratación:</strong> toma agua antes y después de la sesión para ayudar al cuerpo a liberar tensión y toxinas.</li>
+                <li><strong>Contraindicaciones:</strong> si tienes fiebre, infección aguda o un diagnóstico médico reciente, avísame antes de agendar.</li>
+                <li><strong>Después del masaje:</strong> es normal sentirte más relajado, con sueño o un poco cansado. Procura no agendar actividades muy demandantes justo después.</li>
+              </ul>
+            </div>
+          </div>
+
 
           <div class="contact-info">
             <div>
