@@ -50,11 +50,11 @@
         </div>
       </a>
 
-      <button class="nav-toggle" aria-label="Abrir menú">
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="site-nav">
         <span></span><span></span><span></span>
       </button>
 
-      <nav class="site-nav">
+      <nav class="site-nav" id="site-nav" role="navigation">
         <a href="#inicio">Inicio</a>
         <a href="#quien-soy">Quién soy</a>
         <a href="#servicios">Servicios</a>
@@ -864,13 +864,13 @@
   </div>
 
 <div class="w21-chat">
-    <button class="w21-chat-toggle" aria-label="Abrir asistente Wellness">
+    <button class="w21-chat-toggle" aria-label="Abrir asistente Wellness" aria-haspopup="dialog" aria-expanded="false" aria-controls="w21-chat-window">
       <span class="w21-chat-toggle-icon">💬</span>
     </button>
 
     <div class="w21-chat-backdrop" data-w21-close></div>
 
-    <div class="w21-chat-window" aria-hidden="true">
+    <div class="w21-chat-window" id="w21-chat-window" role="dialog" aria-modal="false" aria-hidden="true">
       <header class="w21-chat-header">
         <div class="w21-chat-title">
           <strong>Óscar · Asistente Wellness 21PM</strong>
