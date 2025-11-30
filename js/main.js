@@ -5,23 +5,44 @@ document.addEventListener("DOMContentLoaded", () => {
     yearEl.textContent = new Date().getFullYear();
   }
 
-  // Menú móvil
+  
+  // Tracking seguro (solo si existe gtag)
+  const safeTrack = (name, params = {}) => {
+    if (typeof window.gtag === "function") {
+      window.gtag("event", name, params);
+    }
+  };
+
+// Menú móvil
   const navToggle = document.querySelector(".nav-toggle");
   const nav = document.querySelector(".site-nav");
 
   if (navToggle && nav) {
+    navToggle.setAttribute("aria-controls", "site-nav");
+    navToggle.setAttribute("aria-expanded", "false");
+
+    const updateNavAria = () => {
+      const isOpen = nav.classList.contains("show");
+      navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    };
+
     navToggle.addEventListener("click", () => {
       nav.classList.toggle("show");
+      updateNavAria();
+      safeTrack("click_nav_toggle", { location: "header" });
     });
 
     nav.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", () => {
         nav.classList.remove("show");
+        updateNavAria();
+        safeTrack("click_nav_link", { target: link.getAttribute("href") || "" });
       });
     });
   }
 
-  // Scroll suave para enlaces internos
+
+// Scroll suave para enlaces internos
   const internalLinks = document.querySelectorAll('a[href^="#"]:not([href="#"])');
   internalLinks.forEach((link) => {
     link.addEventListener("click", (e) => {
@@ -62,7 +83,42 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Animaciones de aparición (scroll reveal)
+  
+  // Eventos de analítica (si hay gtag activo)
+  const heroPrimaryCta = document.querySelector(".hero-actions .btn-primary");
+  if (heroPrimaryCta) {
+    heroPrimaryCta.addEventListener("click", () => {
+      safeTrack("click_cta_hero_primary", { destination: "#contacto" });
+    });
+  }
+
+  const heroSecondaryCta = document.querySelector(".hero-actions .btn-ghost");
+  if (heroSecondaryCta) {
+    heroSecondaryCta.addEventListener("click", () => {
+      safeTrack("click_cta_hero_secondary", { destination: "#servicios" });
+    });
+  }
+
+  const mobileCtaButton = document.querySelector(".mobile-cta-button");
+  if (mobileCtaButton) {
+    mobileCtaButton.addEventListener("click", () => {
+      safeTrack("click_mobile_whatsapp_bar", { location: "bottom_bar" });
+    });
+  }
+
+  const whatsappLinks = document.querySelectorAll('a[href*="wa.me/"]');
+  whatsappLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      const href = link.getAttribute("href") || "";
+      const section = link.closest("section");
+      safeTrack("click_whatsapp_link", {
+        href,
+        section: section ? section.id || "unknown" : "no-section",
+      });
+    });
+  });
+
+// Animaciones de aparición (scroll reveal)
   const revealEls = document.querySelectorAll("[data-reveal]");
   if ("IntersectionObserver" in window) {
     const observer = new IntersectionObserver(
@@ -384,6 +440,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function openChat() {
     chatRoot.classList.add("open");
     windowEl.setAttribute("aria-hidden", "false");
+    toggleBtn.setAttribute("aria-expanded", "true");
+    safeTrack("open_chat_widget", { source: "toggle_or_link" });
 
     if (!messagesEl.dataset.greeted) {
       messagesEl.dataset.greeted = "true";
@@ -399,6 +457,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function closeChat() {
     chatRoot.classList.remove("open");
     windowEl.setAttribute("aria-hidden", "true");
+    toggleBtn.setAttribute("aria-expanded", "false");
+    safeTrack("close_chat_widget", { source: "toggle_or_backdrop" });
   }
 
   toggleBtn.addEventListener("click", () => {
@@ -458,12 +518,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // ----- Click en botón de WhatsApp -----
+  // ----- Click en botón de WhatsApp dentro del asistente -----
   messagesEl.addEventListener("click", (e) => {
     const btn = e.target.closest(".w21-chat-wa-btn");
     if (!btn) return;
     const url = btn.getAttribute("data-wa");
     if (url) {
+      safeTrack("click_whatsapp_chat", { context: "assistant_recommendation" });
       window.open(url, "_blank");
     }
   });
