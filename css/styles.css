@@ -2313,3 +2313,17 @@ main li {
     gap: 1rem;
   }
 }
+
+
+.icon-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255, 206, 110, 0.15);
+    color: #c28b27;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin: 0 auto 1rem auto;
+}
